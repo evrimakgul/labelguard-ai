@@ -40,7 +40,10 @@ class TesseractOCRProvider:
             data = pytesseract.image_to_data(
                 prepared,
                 lang="eng",
-                config="--oem 3 --psm 6",
+                # Alcohol labels contain several independent text regions rather than
+                # one uniform paragraph. Sparse-text mode preserves isolated brand
+                # lines that Tesseract's single-block mode can omit.
+                config="--oem 3 --psm 11",
                 output_type=Output.DICT,
                 timeout=self.timeout_seconds,
             )

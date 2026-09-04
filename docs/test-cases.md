@@ -16,9 +16,10 @@
 | Warning spelling error | Wording Mismatch |
 | Warning punctuation error | Punctuation Mismatch |
 | Empty OCR | Overall Needs Review |
+| Sparse OCR noise | Overall Needs Review, not missing-field Mismatch |
 | Invalid/corrupt upload | Friendly 400 error |
 | OCR provider failure | Friendly 503 without upstream details |
-| Tesseract adapter output | Words, confidence, lines, and bounding boxes map correctly |
+| Tesseract adapter output | Sparse-text mode plus words, confidence, lines, and bounding boxes map correctly |
 | Missing Tesseract runtime | Friendly provider error without internal details |
 | EXIF-rotated image | Orientation is corrected and metadata is removed |
 | Low-contrast image | Contrast enhancement is applied |
@@ -38,6 +39,6 @@
 5. Repeat with mismatch fixtures and confirm the relevant issue is explained.
 6. Upload a text file renamed as PNG and confirm the API rejects it without a stack trace.
 7. Check desktop and mobile layouts with keyboard-only navigation.
-8. With Tesseract installed, repeat the pass, rotated, low-contrast, and unreadable fixtures in normal production mode.
+8. With Tesseract installed, run `$env:RUN_LIVE_OCR='1'; .\.venv\Scripts\pytest apps\api\tests\test_live_tesseract.py; Remove-Item Env:RUN_LIVE_OCR`.
 
-Current live result on 2026-09-04: **failed**. Tesseract omitted the pass fixture's brand heading, and the unreadable fixture produced an overall Mismatch instead of Needs Review. These are open Codex remediation items in `PROJECT_STATUS.md`; container acceptance must not be marked complete from demo-provider results.
+Current live result on 2026-09-04: **passed**. All seven cases returned their expected Pass, Mismatch, or Needs Review outcome with the real local Tesseract provider. Container acceptance remains separate and pending.

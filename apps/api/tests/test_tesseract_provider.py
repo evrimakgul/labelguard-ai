@@ -24,7 +24,13 @@ OCR_DATA = {
 async def test_tesseract_maps_words_confidence_lines_and_boxes(
     monkeypatch: pytest.MonkeyPatch, png_bytes: bytes
 ) -> None:
-    monkeypatch.setattr(pytesseract, "image_to_data", lambda *args, **kwargs: OCR_DATA)
+    called_with = {}
+
+    def image_to_data(*args, **kwargs):
+        called_with.update(kwargs)
+        return OCR_DATA
+
+    monkeypatch.setattr(pytesseract, "image_to_data", image_to_data)
     result = await TesseractOCRProvider().extract(png_bytes, "image/png")
 
     assert result.provider == "local-tesseract"
@@ -33,6 +39,7 @@ async def test_tesseract_maps_words_confidence_lines_and_boxes(
     assert result.lines[0].bounding_box is not None
     assert result.lines[0].bounding_box.points[2].x == 90
     assert result.width == 200
+    assert called_with["config"] == "--oem 3 --psm 11"
 
 
 @pytest.mark.asyncio

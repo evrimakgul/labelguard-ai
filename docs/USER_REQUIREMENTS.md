@@ -49,21 +49,11 @@ gh auth login --web
 
 Do not send a personal access token in chat and do not place one in `.env`. The CLI should store authentication in the operating-system credential manager. No GitHub secret is required by the current CI workflow.
 
-## Current Codex gate
+## Completed: live Windows OCR acceptance
 
-Live Tesseract acceptance exposed a brand-detection defect. Do not build the final container, push, or deploy while `PROJECT_STATUS.md` lists this gate as open. Codex must repair and revalidate OCR first.
+The production Tesseract provider passes all seven repository label cases, including corrected brand detection and Needs Review handling for unreadable OCR. A 20-request live benchmark also passes.
 
-## Single next action now
-
-No PowerShell command is required now. Send Codex this instruction:
-
-```text
-Fix and verify the live Tesseract acceptance blockers documented in PROJECT_STATUS.md.
-```
-
-Expected result: Codex corrects brand detection and unreadable-image status behavior, adds regression coverage, reruns the real local Tesseract fixtures, and updates `PROJECT_STATUS.md` to open the container gate.
-
-## Next PowerShell action after Codex clears live OCR
+## Single next action now: Podman acceptance
 
 Run this block from a new PowerShell window at the repository root:
 

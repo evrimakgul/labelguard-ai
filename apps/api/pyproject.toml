@@ -31,6 +31,9 @@ packages = ["app"]
 addopts = "-q"
 testpaths = ["tests"]
 asyncio_mode = "auto"
+markers = [
+  "live_ocr: opt-in acceptance tests that invoke the installed Tesseract runtime",
+]
 
 [tool.ruff]
 line-length = 100

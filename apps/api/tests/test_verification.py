@@ -93,6 +93,28 @@ def test_empty_ocr_requires_review_instead_of_false_pass() -> None:
     assert {check.status for check in checks} == {VerificationStatus.REVIEW}
 
 
+def test_sparse_ocr_noise_requires_review_instead_of_missing_fields() -> None:
+    app = make_application()
+    extracted = extract_label(make_ocr("ea", "xx"), app)
+    checks = verify_label(app, extracted)
+
+    assert overall_status(checks) == VerificationStatus.REVIEW
+    assert {check.status for check in checks} == {VerificationStatus.REVIEW}
+
+
+def test_readable_label_with_missing_brand_is_still_a_mismatch() -> None:
+    checks = run_checks(
+        "KENTUCKY STRAIGHT BOURBON WHISKEY",
+        "45% Alc./Vol.",
+        "750 mL",
+        "DISTILLED AND BOTTLED IN THE USA",
+        CANONICAL_WARNING,
+    )
+
+    assert status_for(checks, "brandName") == VerificationStatus.MISSING
+    assert overall_status(checks) == VerificationStatus.MISMATCH
+
+
 def test_volume_conversions() -> None:
     assert volume_to_ml(0.75, "L") == 750
     assert round(volume_to_ml(12, "fl_oz"), 2) == 354.88

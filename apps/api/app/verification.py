@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+
 from app.extraction import CANONICAL_WARNING, normalize_comparison_text, similarity
 from app.models import (
     ExtractedField,
@@ -11,6 +13,12 @@ from app.models import (
 )
 
 AUTO_CONFIDENCE = 0.80
+
+
+def _has_usable_text(value: str) -> bool:
+    """Reject sparse OCR noise before individual missing-field decisions."""
+    tokens = re.findall(r"[a-z0-9]{2,}", value.casefold())
+    return len(tokens) >= 3 and sum(len(token) for token in tokens) >= 12
 
 
 def volume_to_ml(value: float, unit: VolumeUnit) -> float:
@@ -219,7 +227,7 @@ def _warning_checks(extracted: ExtractedLabel) -> list[VerificationCheck]:
 def verify_label(
     application: LabelApplication, extracted: ExtractedLabel
 ) -> list[VerificationCheck]:
-    if not extracted.full_text.strip():
+    if not _has_usable_text(extracted.full_text):
         return [
             VerificationCheck(
                 field=field,

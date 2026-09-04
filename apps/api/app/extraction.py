@@ -25,6 +25,16 @@ CLASS_KEYWORDS = re.compile(
     r"beer|ale|lager|stout|porter|vermouth|champagne)\b",
     re.IGNORECASE,
 )
+BRAND_KEYWORDS = re.compile(
+    r"\b(distiller(?:y|ies)?|brewing|brewery|winery|wines?|cellars?|vineyards?|spirits?|"
+    r"company|co\.?|brands?)\b",
+    re.IGNORECASE,
+)
+PRODUCER_STATEMENT = re.compile(
+    r"\b(?:bottled|produced|distilled|imported|distributed|manufactured|packed)\s+"
+    r"(?:(?:and\s+)?bottled\s+)?(?:by|in|at|for)\b",
+    re.IGNORECASE,
+)
 ABV_PATTERN = re.compile(
     r"(?P<value>\d{1,3}(?:\.\d+)?)\s*(?:%|percent)\s*"
     r"(?P<format>alc(?:ohol)?\.?\s*/?\s*vol(?:ume)?\.?|alcohol\s+by\s+volume|abv)?",
@@ -64,7 +74,7 @@ def _best_line(
     *,
     class_field: bool,
 ) -> OCRLine | None:
-    candidates = []
+    candidates: list[tuple[float, int, OCRLine]] = []
     for index, line in enumerate(lines):
         text = line.text.strip()
         lowered = text.casefold()
@@ -72,23 +82,35 @@ def _best_line(
             continue
         if ABV_PATTERN.search(text) or PROOF_PATTERN.search(text) or VOLUME_PATTERN.search(text):
             continue
+        if PRODUCER_STATEMENT.search(text):
+            continue
         has_class_keyword = bool(CLASS_KEYWORDS.search(text))
         if class_field and not has_class_keyword:
             continue
-        if not class_field and has_class_keyword:
-            continue
         score = similarity(expected, text)
-        position_bonus = max(0.0, 0.08 - index * 0.01)
-        candidates.append((score + position_bonus, line))
+        candidates.append((score, index, line))
     if not candidates and class_field:
         candidates = [
-            (similarity(expected, line.text), line)
-            for line in lines
+            (similarity(expected, line.text), index, line)
+            for index, line in enumerate(lines)
             if line.text.strip()
             and not ABV_PATTERN.search(line.text)
             and not VOLUME_PATTERN.search(line.text)
+            and not PRODUCER_STATEMENT.search(line.text)
         ]
-    return max(candidates, key=lambda item: item[0])[1] if candidates else None
+    if not candidates:
+        return None
+
+    closest = max(candidates, key=lambda item: item[0])
+    if closest[0] >= 0.60 or class_field:
+        return closest[2]
+
+    brand_candidates = [item for item in candidates if BRAND_KEYWORDS.search(item[2].text)]
+    if brand_candidates:
+        return min(brand_candidates, key=lambda item: item[1])[2]
+
+    generic_candidates = [item for item in candidates if not CLASS_KEYWORDS.search(item[2].text)]
+    return min(generic_candidates, key=lambda item: item[1])[2] if generic_candidates else None
 
 
 def _extract_abv(lines: list[OCRLine]) -> ExtractedField:

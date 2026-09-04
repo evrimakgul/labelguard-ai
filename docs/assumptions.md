@@ -14,5 +14,5 @@
 12. Podman 6.0.2 is the selected free OCI engine. Its rootless WSL2 machine is operational; image build/run acceptance is still pending.
 13. GitHub CLI is authenticated through the operating-system keyring, and no GitHub token belongs in project configuration.
 14. No final public host will be selected until it provides HTTPS without billing information, a payment method, prepaid credits, or a paid subscription.
-15. Deterministic fixture success does not establish live OCR correctness; the current live brand-detection failure blocks submission readiness.
+15. Deterministic fixtures do not replace live OCR evidence; the current Windows Tesseract acceptance and benchmark therefore run as separate opt-in checks.
 16. LabelGuard AI provides decision support and never represents an official TTB determination.

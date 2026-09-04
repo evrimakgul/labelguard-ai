@@ -68,3 +68,43 @@ def test_warning_heading_case_and_punctuation_are_independent() -> None:
     assert result.health_warning.heading_correct is False
     assert result.health_warning.wording_correct is True
     assert result.health_warning.punctuation_correct is False
+
+
+def test_producer_statement_is_not_used_as_missing_brand() -> None:
+    result = extract_label(
+        ocr_from_lines(
+            "KENTUCKY STRAIGHT BOURBON WHISKEY",
+            "45% Alc./Vol.",
+            "750 mL",
+            "DISTILLED AND BOTTLED IN THE USA",
+            CANONICAL_WARNING,
+        ),
+        application(),
+    )
+
+    assert result.brand_name.value is None
+
+
+def test_brand_keyword_supports_confident_wrong_brand_detection() -> None:
+    result = extract_label(
+        ocr_from_lines(
+            "ACME SPIRITS",
+            "KENTUCKY STRAIGHT BOURBON WHISKEY",
+            "45% Alc./Vol.",
+            "750 mL",
+            CANONICAL_WARNING,
+        ),
+        application(),
+    )
+
+    assert result.brand_name.value == "ACME SPIRITS"
+
+
+def test_distilled_spirits_class_is_not_treated_as_a_producer_statement() -> None:
+    app = application().model_copy(update={"class_type": "Distilled Spirits"})
+    result = extract_label(
+        ocr_from_lines("STONE'S THROW", "DISTILLED SPIRITS", "45% Alc./Vol.", "750 mL"),
+        app,
+    )
+
+    assert result.class_type.value == "DISTILLED SPIRITS"

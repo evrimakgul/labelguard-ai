@@ -8,20 +8,20 @@
 - The OCI image includes Tesseract and English data, but the image has not yet been built locally.
 - `TREASURY_ASSIGNMENT.md` remains unchanged historical/source material.
 
-The deterministic and browser/demo gates are green in commits `d9dd867` and `37c66f9`. A 2026-09-04 live Tesseract smoke test reopened acceptance because the pass fixture's brand was not detected.
+The deterministic and browser/demo gates are green in commits `d9dd867` and `37c66f9`. The 2026-09-04 live Tesseract defect has been corrected and all seven live OCR fixture cases pass.
 
-Current priority returns to P0 OCR correctness. Retain existing P1 work, but do not add P1 or P2 scope until live P0 acceptance passes.
+P0 and P1 are stable locally. Do not add P2 scope while container and delivery acceptance remain.
 
-## Immediate remediation — Codex
+## Live OCR remediation — complete
 
-- Fix Tesseract segmentation/preprocessing so the pass fixture detects its brand.
-- Make field fallback behavior express Missing or Needs Review instead of a misleading high-confidence mismatch when no plausible brand candidate exists.
-- Make genuinely unreadable OCR produce Needs Review rather than Mismatch.
-- Add live-regression coverage and rerun local OCR acceptance before benchmarking.
+- Sparse-text segmentation preserves the isolated brand heading.
+- Producer statements are excluded from brand fallback, while brand-keyword mismatches remain detectable.
+- Sparse unreadable OCR produces Needs Review rather than Mismatch.
+- Deterministic regressions, seven opt-in live cases, and a 20-request live benchmark pass.
 
-## Container acceptance — User then Codex
+## Current gate: container acceptance — User then Codex
 
-- After Codex clears live OCR, the user runs the exact Podman block in `USER_REQUIREMENTS.md` and leaves the container running.
+- With live OCR now clear, the user runs the exact Podman block in `USER_REQUIREMENTS.md` and leaves the container running.
 - Codex verifies health, bundled Tesseract, pass/mismatch/review/error browser flows, logs, mobile layout, and live timings through the container.
 
 ## Deferred

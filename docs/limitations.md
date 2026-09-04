@@ -9,6 +9,6 @@
 - Fixture demo mode is not OCR and only reads embedded text from the repository fixtures.
 - Local Tesseract accuracy varies with font, decoration, language data, and host CPU resources.
 - Bounding boxes can be approximate after geometric preprocessing.
-- The current live Tesseract pass/rotation/contrast fixtures miss the brand heading and therefore fail acceptance; fixture demo mode does not reveal this defect.
-- Live Tesseract benchmarking is paused until the brand-detection and unreadable-image behaviors are corrected.
+- Sparse OCR output below the usable-text threshold is conservatively classified as Needs Review; a human must inspect borderline images.
+- Live benchmark timings are host- and fixture-specific and do not guarantee performance on arbitrary artwork or deployment hardware.
 - Batch processing and CSV workflows are intentionally deferred until P0 and P1 remain stable.

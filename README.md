@@ -8,7 +8,7 @@ The application runs locally without a paid service. The OCI image is configured
 
 ## Current Status
 
-P0/P1 implementation and deterministic gates are complete, but the first live Tesseract acceptance found that the pass fixture's brand line is not detected. Codex remediation is the current gate; container acceptance, push, and deployment follow afterward. See [project status](docs/PROJECT_STATUS.md) and [user requirements](docs/USER_REQUIREMENTS.md).
+P0/P1 implementation, deterministic gates, and live Windows Tesseract acceptance are complete. Local OCI build/run acceptance with Podman is the current gate; push and deployment follow afterward. See [project status](docs/PROJECT_STATUS.md) and [user requirements](docs/USER_REQUIREMENTS.md).
 
 ## Problem
 
@@ -129,6 +129,9 @@ Open `http://localhost:3000`. If Tesseract is not installed, use `OCR_PROVIDER=d
 .\.venv\Scripts\ruff check apps\api\app apps\api\tests scripts
 .\.venv\Scripts\ruff format --check apps\api\app apps\api\tests scripts
 .\.venv\Scripts\pytest apps\api
+$env:RUN_LIVE_OCR='1'
+.\.venv\Scripts\pytest apps\api\tests\test_live_tesseract.py
+Remove-Item Env:RUN_LIVE_OCR
 
 Set-Location apps\web
 npm run lint
@@ -162,7 +165,7 @@ See [portable deployment guidance](docs/deployment.md). No external resources ar
 
 The response reports image-preparation, OCR, extraction, verification, and total timings. On this Windows development host, 20 fixture-mode requests measured a 136.2 ms wall median and 169.0 ms p95 (131.5 ms/164.0 ms API-reported). Run `.venv/Scripts/python scripts/benchmark_demo.py` to reproduce it.
 
-A 2026-09-04 live Tesseract smoke test completed individual fixtures in 457–823 ms, but correctness failed because the brand line was not detected. These diagnostic timings are not an accepted benchmark. Live benchmarking resumes only after the OCR defect is fixed; the warm target remains approximately five seconds or less.
+After live OCR correction, 20 production-mode requests on the same host measured a 682.8 ms wall median and 737.6 ms p95 (679.0 ms/734.0 ms API-reported; 546.5 ms/565.0 ms OCR stage). Run `.venv/Scripts/python scripts/benchmark_live_ocr.py` to reproduce it. These host-specific fixture measurements are evidence for the warm target, not a guarantee for arbitrary artwork or deployment hardware.
 
 ## Test Data
 
