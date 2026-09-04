@@ -6,7 +6,7 @@ Updated: 2026-09-04
 
 - P0 implementation committed locally as `d9dd867` (`feat: implement local single-label verification`).
 - P1 implementation committed locally as `37c66f9` (`feat: add image robustness and evidence`).
-- P0/P1 deterministic gates and live Windows Tesseract acceptance pass. The next acceptance gate is the OCI image build and run.
+- P0/P1 deterministic gates and live Windows Tesseract acceptance pass. The OCI image build passed; remaining acceptance is container startup and health.
 - Podman built `labelguard-ai:local` successfully and created `labelguard-ai-local`; the first immediate health request closed unexpectedly before the remaining checks ran. Container diagnosis is now the active gate.
 - P2 intentionally deferred.
 
