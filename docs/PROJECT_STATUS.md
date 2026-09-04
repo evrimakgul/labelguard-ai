@@ -6,9 +6,10 @@ Updated: 2026-09-04
 
 - P0 implementation committed locally as `d9dd867` (`feat: implement local single-label verification`).
 - P1 implementation committed locally as `37c66f9` (`feat: add image robustness and evidence`).
-- P0/P1 deterministic gates and live Windows Tesseract acceptance pass. The OCI image build passed; remaining acceptance is container startup and health.
+- P0/P1 deterministic gates and live Windows Tesseract acceptance pass. OCI build, startup, and internal health pass; remaining acceptance is Windows host access and end-to-end container behavior.
 - Podman built `labelguard-ai:local` successfully. The container remains running, and its internal health endpoint returns `{"status":"ok"}`. Windows IPv4 port 8000 is refused while only `::1:8000` is listening, isolating the active gate to Podman/WSL host forwarding.
 - The `::1:8000` listener is `wslrelay.exe`. WSL is `2.7.12.0`; the first machine-address lookup was inconclusive because the minimal Podman machine has no `hostname` executable.
+- The Podman-machine routing table identifies `192.168.70.113` as its current `eth0` source address; direct Windows access to that address is the next read-only test.
 - P2 intentionally deferred.
 
 ## Current architecture
@@ -53,7 +54,7 @@ On 2026-09-04, Codex corrected the Tesseract segmentation mode and unreadable-te
 
 ### User next
 
-Run the single documented Podman-machine route lookup in `USER_REQUIREMENTS.md`, return its complete output, and leave the container running.
+Run the documented direct Podman-machine IPv4 test in `USER_REQUIREMENTS.md`, return its complete output, and leave the container running.
 
 ### Codex next
 
@@ -61,7 +62,7 @@ After receiving that output, inspect the running container, verify bundled Tesse
 
 ## Remaining delivery path
 
-1. User runs the documented Podman-machine route lookup and returns the requested output.
+1. User runs the documented direct Podman-machine IPv4 test and returns the requested output.
 2. Codex resolves host forwarding, then verifies Tesseract and application behavior inside the running container, benchmarks live OCR, runs all automated gates, and updates README evidence.
 3. Codex performs repository/secrets/CI readiness review.
 4. The temporary no-push gate is lifted only after container acceptance passes.

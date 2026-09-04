@@ -67,21 +67,27 @@ Podman's Windows documentation says published ports should bind to `127.0.0.1`. 
 
 PID `29440` is `C:\Program Files\WSL\wslrelay.exe`, confirming that the IPv6 listener belongs to WSL forwarding. The host runs WSL `2.7.12.0` with kernel `6.18.33.2-2`. The first machine-address lookup was inconclusive because the minimal `podman-machine-default` image does not contain `hostname`; the resulting null-variable connection attempts did not test any Podman-machine address.
 
-## Single next action now: obtain the Podman-machine IPv4
+## Completed: Podman-machine IPv4 lookup
 
-Run this one read-only command from PowerShell. It asks the Linux routing table which source address it would use; it does not send traffic. Do not substitute or add commands:
+The routing table reports `192.168.70.113` as the current Podman-machine source address on `eth0`. This address is diagnostic and can change after restarting the Podman machine.
+
+## Single next action now: test the Podman-machine IPv4
+
+Run this exact read-only block from PowerShell. Do not substitute an address, restart anything, or remove the container:
 
 ```powershell
 Set-Location C:\Users\Evrim\Documents\PROJECTS\labelguard-ai
-wsl.exe --distribution podman-machine-default --exec ip -4 route get 1.1.1.1
+Test-NetConnection -ComputerName 192.168.70.113 -Port 8000
+curl.exe --verbose --noproxy "*" --max-time 10 http://192.168.70.113:8000/api/health
 ```
 
 Expected evidence:
 
-- A route line containing `dev`, `src`, and an IPv4 address, for example `src 172.x.x.x`.
-- If `ip` is also unavailable, return that exact error instead.
+- `Test-NetConnection` reports whether Windows can reach port `8000` on the Podman-machine address.
+- If reachable, `curl.exe` returns HTTP `200` with `{"status":"ok"}`.
+- If refused or timed out, the output confirms that neither WSL localhost relay nor direct machine-address access works.
 
-Return the complete output to Codex and leave the container running. Codex will extract the `src` address and document the exact address-specific test next.
+Return the complete output to Codex and leave the container running.
 
 ## OCI `HEALTHCHECK` warning
 
