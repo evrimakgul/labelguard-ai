@@ -1,0 +1,11 @@
+.git
+.github
+.venv
+.npm-cache
+**/.next
+**/node_modules
+**/__pycache__
+**/.pytest_cache
+**/coverage
+docs/screenshots
+

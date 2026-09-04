@@ -154,7 +154,9 @@ Use this default stack unless there is a strong technical reason to change it.
 
 ### OCR
 
-- Azure AI Vision OCR / Read capability
+- Tesseract OCR as the default local OCR engine
+- OCR must run locally and must not require a paid cloud API
+- Keep OCR behind the `OCRProvider` abstraction so another provider can be added later if needed
 
 ### Image Processing
 
@@ -179,7 +181,7 @@ Frontend:
 ### Deployment
 
 - Docker
-- Azure Container Apps
+- portable OCI-compatible hosting
 - GitHub Actions
 
 ### Source Control

@@ -37,14 +37,14 @@ The recommended architecture is:
 **React/Next.js + TypeScript**
 → **FastAPI/Python verification API**
 → **image preprocessing**
-→ **Azure Vision OCR**
+→ **local Tesseract OCR**
 → **deterministic verification engine**
 
-Azure Vision is appropriate because its current Read OCR API is designed for synchronous, near-real-time text extraction.
+Tesseract is appropriate because it runs locally, is open source, returns word-level confidence and geometry, and requires no paid API or external network call.
 
-Deployment should use one containerized application on Azure Container Apps. Microsoft provides direct support for containerized FastAPI applications on that service.
+Deployment should use one portable OCI container. A public host must not require billing information, a payment method, prepaid credits, or a paid subscription.
 
-The browser will communicate only with LabelGuard AI. OCR requests will occur server-side. This design reduces the effect of network restrictions on Treasury workstations.
+The browser will communicate only with LabelGuard AI. OCR runs server-side inside the same machine or container, avoiding external OCR endpoints and reducing the effect of network restrictions on Treasury workstations.
 
 The application should not claim:
 
@@ -276,7 +276,7 @@ Run the original image first when possible. Apply stronger preprocessing only wh
 
 This approach helps preserve latency.
 
-Azure Vision currently accepts common image formats and is intended to extract text from photographs and other non-document surfaces.
+Tesseract accepts the validated, preprocessed image locally and returns structured word data through the provider adapter.
 
 ---
 
@@ -472,11 +472,11 @@ This creates a small but useful benchmark suite.
 
 ---
 
-## Phase 9 — Deploy early
+## Phase 9 — Package for deployment early
 
 Do not leave deployment until the end.
 
-Deploy after the first complete vertical slice.
+Build and test the portable container after the first complete vertical slice.
 
 Recommended production path:
 
@@ -488,19 +488,16 @@ GitHub
   └── Docker build
         │
         ▼
-Azure Container Apps
-        │
+Portable OCI container
         ├── Frontend
         ├── FastAPI
-        └── Verification Engine
-                │
-                ▼
-        Azure Vision OCR
+        ├── Verification Engine
+        └── Local Tesseract OCR
 ```
 
-Azure Container Apps supports deployment of containerized FastAPI applications and provides an externally accessible HTTPS endpoint.
+A final public host is intentionally deferred until it satisfies the no-cost and no-billing constraints.
 
-One public application endpoint is preferable to exposing a separate browser-facing OCR service.
+One public application endpoint is preferable; no separate browser-facing OCR service is needed.
 
 ---
 
@@ -848,37 +845,38 @@ This is a useful documented limitation.
 
 Recommended service:
 
-**Azure Vision Read OCR**
+**Local Tesseract OCR**
 
 Reason:
 
 * suitable for image text
 * synchronous OCR
 * intended for near-real-time use
-* returns structured text information
-* fits the stakeholder Azure environment
+* returns word confidence and bounding boxes
+* runs without an external network call
+* requires no API key, paid service, or billing account
 
-Microsoft describes the current Read OCR interface as suitable for near-real-time user experiences.
+The Python adapter uses `pytesseract` to map Tesseract TSV data into provider-neutral OCR models.
 
 Create an interface:
 
 ```python
 class OCRProvider(Protocol):
-    async def extract(self, image: bytes) -> OCRResult:
+    async def extract(self, image: bytes, content_type: str) -> OCRResult:
         ...
 ```
 
 Implementation:
 
 ```python
-class AzureVisionOCRProvider:
+class TesseractOCRProvider:
     ...
 ```
 
 This allows a future implementation such as:
 
 ```python
-class LocalOCRProvider:
+class FutureOCRProvider:
     ...
 ```
 

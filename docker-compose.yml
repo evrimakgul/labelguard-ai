@@ -1,0 +1,10 @@
+services:
+  labelguard:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    environment:
+      OCR_PROVIDER: ${OCR_PROVIDER:-tesseract}
+      CORS_ORIGINS: http://localhost:8000
+    restart: unless-stopped

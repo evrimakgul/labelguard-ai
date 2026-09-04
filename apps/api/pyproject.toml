@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "labelguard-api"
+version = "0.1.0"
+description = "Deterministic alcohol label verification API"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.116,<1",
+  "pillow>=11,<13",
+  "pytesseract>=0.3.13,<1",
+  "python-multipart>=0.0.20,<1",
+  "uvicorn[standard]>=0.35,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.4,<10",
+  "pytest-asyncio>=1.1,<2",
+  "httpx>=0.28,<1",
+  "ruff>=0.12,<1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
