@@ -57,26 +57,35 @@ The production Tesseract provider passes all seven repository label cases, inclu
 
 The container remained running for at least 15 minutes with exit code `0`. Its logs show application startup completed and Uvicorn listening on `0.0.0.0:8000`; Podman reports `0.0.0.0:8000->8000/tcp`. A delayed request to `localhost` still closed unexpectedly. The application process is therefore stable, and diagnosis now moves to the in-container endpoint and Windows IPv4 forwarding path.
 
-## Single next action now: internal and IPv4 health diagnosis
+## Completed: internal and Windows IPv4 health diagnosis
 
-Run this read-only block from a PowerShell window at the repository root. Do not rebuild, restart, stop, or remove the container:
+The in-container endpoint returns `{"status":"ok"}`, proving that the packaged application is healthy. Windows cannot connect to `127.0.0.1:8000`, and `curl.exe` receives connection refused. Windows reports only an IPv6 `::1:8000` listener owned by process `29440`, despite Podman reporting an IPv4 publication. The open defect is therefore Podman/WSL host forwarding, not LabelGuard startup.
+
+Podman's Windows documentation says published ports should bind to `127.0.0.1`. The observed behavior instead matches [Microsoft WSL issue 41204](https://github.com/microsoft/WSL/issues/41204), which reports Podman 6 ports reachable inside WSL but refused from Windows.
+
+## Single next action now: identify the relay and test the WSL address
+
+Run this read-only block from PowerShell. Do not rebuild, restart, stop, or remove the container:
 
 ```powershell
 Set-Location C:\Users\Evrim\Documents\PROJECTS\labelguard-ai
-podman exec labelguard-ai-local python -c "import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=5).read().decode())"
-Test-NetConnection -ComputerName 127.0.0.1 -Port 8000
-curl.exe --verbose --noproxy "*" --max-time 10 http://127.0.0.1:8000/api/health
-Get-NetTCPConnection -LocalPort 8000 -State Listen -ErrorAction SilentlyContinue | Select-Object LocalAddress,LocalPort,OwningProcess
+Get-Process -Id 29440 -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,Path
+wsl.exe --version
+$podmanMachineAddresses = wsl.exe --distribution podman-machine-default hostname -I
+$podmanMachineIp = (($podmanMachineAddresses | Select-Object -Last 1).Trim() -split '\s+')[0]
+Write-Output "Podman machine IPv4: $podmanMachineIp"
+Test-NetConnection -ComputerName $podmanMachineIp -Port 8000
+curl.exe --verbose --noproxy "*" --max-time 10 "http://${podmanMachineIp}:8000/api/health"
 ```
 
 Expected evidence:
 
-- The internal probe should print `{"status":"ok"}`. This proves the packaged application is healthy.
-- `Test-NetConnection` should report whether the Windows IPv4 port is reachable.
-- `curl.exe` should show the exact IPv4 connection and HTTP response, or the transport failure.
-- The final command identifies any Windows process already listening on port `8000`.
+- The first command identifies whether PID `29440` is a Podman/WSL relay or an unrelated listener.
+- The WSL commands print the installed WSL version and the Podman machine address.
+- If direct WSL-address forwarding works, `TcpTestSucceeded` is `True` and `curl.exe` returns HTTP `200` with `{"status":"ok"}`.
+- If it also fails, the output establishes a Podman 6/WSL forwarding defect before any machine restart or configuration change.
 
-Return the complete PowerShell output to Codex and leave the container running. If the internal probe succeeds but both Windows probes fail, the remaining defect is Podman/WSL port forwarding rather than LabelGuard startup.
+Return the complete PowerShell output to Codex and leave the container running.
 
 ## OCI `HEALTHCHECK` warning
 

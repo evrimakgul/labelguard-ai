@@ -4,11 +4,11 @@ LabelGuard AI is a standalone decision-support prototype that compares U.S. alco
 
 ## Live Demo
 
-The application runs locally without a paid service. The OCI image and container process start successfully; Windows-to-Podman port forwarding is being diagnosed after host health probes closed unexpectedly. A public host has intentionally not been selected; any future host must provide public HTTPS without billing information, a payment method, credits, or a paid subscription.
+The application runs locally without a paid service. The OCI image, container process, and internal health endpoint pass; Podman 6/WSL host forwarding is being diagnosed because Windows IPv4 port 8000 is refused. A public host has intentionally not been selected; any future host must provide public HTTPS without billing information, a payment method, credits, or a paid subscription.
 
 ## Current Status
 
-P0/P1 implementation, deterministic gates, and live Windows Tesseract acceptance are complete. The OCI image and Uvicorn startup pass; container network diagnosis is the current gate. Push and deployment follow afterward. See [project status](docs/PROJECT_STATUS.md) and [user requirements](docs/USER_REQUIREMENTS.md).
+P0/P1 implementation, deterministic gates, and live Windows Tesseract acceptance are complete. The container is internally healthy; Podman/WSL host forwarding is the current gate. Push and deployment follow afterward. See [project status](docs/PROJECT_STATUS.md) and [user requirements](docs/USER_REQUIREMENTS.md).
 
 ## Problem
 
