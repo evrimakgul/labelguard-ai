@@ -4,11 +4,11 @@ LabelGuard AI is a standalone decision-support prototype that compares U.S. alco
 
 ## Live Demo
 
-The application runs locally without a paid service. The OCI image is configured but has not yet completed its first local build/run acceptance. A public host has intentionally not been selected; any future host must provide public HTTPS without billing information, a payment method, credits, or a paid subscription.
+The application runs locally without a paid service. The OCI image build has passed; first runtime acceptance is being diagnosed after the initial health probe closed unexpectedly. A public host has intentionally not been selected; any future host must provide public HTTPS without billing information, a payment method, credits, or a paid subscription.
 
 ## Current Status
 
-P0/P1 implementation, deterministic gates, and live Windows Tesseract acceptance are complete. Local OCI build/run acceptance with Podman is the current gate; push and deployment follow afterward. See [project status](docs/PROJECT_STATUS.md) and [user requirements](docs/USER_REQUIREMENTS.md).
+P0/P1 implementation, deterministic gates, and live Windows Tesseract acceptance are complete. The OCI image builds with Podman; runtime health diagnosis is the current gate. Push and deployment follow afterward. See [project status](docs/PROJECT_STATUS.md) and [user requirements](docs/USER_REQUIREMENTS.md).
 
 ## Problem
 
@@ -147,7 +147,7 @@ podman build --tag labelguard-ai:local .
 podman run --rm --publish 8000:8000 labelguard-ai:local
 ```
 
-The image installs Tesseract and English language data. No host OCR installation, credentials, or paid service is required. Local container acceptance is still pending and must use the staged procedure in [user requirements](docs/USER_REQUIREMENTS.md).
+The image installs Tesseract and English language data. No host OCR installation, credentials, or paid service is required. The image build passed; runtime container acceptance is pending the staged diagnosis in [user requirements](docs/USER_REQUIREMENTS.md).
 
 ## Deployment
 
