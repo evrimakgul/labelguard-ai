@@ -189,6 +189,28 @@ h1 {
   font-size: 14px;
 }
 
+.secondary-button {
+  min-height: 38px;
+  padding: 0 12px;
+  color: var(--blue);
+  border: 1px solid #91b5cf;
+  border-radius: 8px;
+  background: #f3f9fc;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.secondary-button:hover:not(:disabled) {
+  background: var(--blue-soft);
+}
+
+.secondary-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .field-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -266,6 +288,22 @@ h1 {
   object-fit: contain;
 }
 
+.evidence-overlay {
+  z-index: 1;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.evidence-overlay polygon {
+  fill: rgba(255, 197, 51, 0.3);
+  stroke: #ffb700;
+  stroke-width: 8;
+  vector-effect: non-scaling-stroke;
+}
+
 .preview-overlay {
   z-index: 1;
   position: absolute;
@@ -317,6 +355,15 @@ h1 {
   gap: 8px;
   color: var(--muted);
   font-size: 12px;
+}
+
+.demo-download {
+  margin-top: 9px;
+  display: inline-block;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 700;
+  text-underline-offset: 3px;
 }
 
 .action-bar {
@@ -503,6 +550,20 @@ h1 {
   border: 1px solid var(--line);
   border-radius: 10px;
   background: #fff;
+  cursor: pointer;
+  font: inherit;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.check-card:hover:not(:disabled),
+.check-card.active {
+  border-color: #5e9bc5;
+  box-shadow: 0 0 0 2px rgba(23, 105, 170, 0.12);
+}
+
+.check-card:disabled {
+  opacity: 1;
+  cursor: default;
 }
 
 .check-title {
@@ -586,6 +647,35 @@ h1 {
   white-space: pre-wrap;
 }
 
+.timing-grid {
+  margin: 13px 0 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.timing-grid div {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8fafb;
+}
+
+.timing-grid dt {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.timing-grid dd {
+  margin: 3px 0 0;
+  color: var(--navy);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
 .page-footer {
   margin-top: 42px;
   padding-top: 22px;
@@ -619,7 +709,8 @@ h1 {
   }
 
   .field-grid,
-  .progress-panel {
+  .progress-panel,
+  .timing-grid {
     grid-template-columns: 1fr;
   }
 
@@ -666,4 +757,3 @@ h1 {
     transition-duration: 0.01ms !important;
   }
 }
-

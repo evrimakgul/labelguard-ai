@@ -1,12 +1,14 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import type { FormEvent } from "react";
 
 import { ApplicationForm } from "@/components/ApplicationForm";
 import { ResultsPanel } from "@/components/ResultsPanel";
 import { UploadPanel } from "@/components/UploadPanel";
 import type { ApplicationFormValues, VerificationResponse } from "@/lib/types";
 import {
+  DEMO_APPLICATION,
   INITIAL_APPLICATION,
   submitVerification,
   VerificationRequestError,
@@ -21,6 +23,7 @@ export function VerificationWorkspace() {
   const [result, setResult] = useState<VerificationResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState<ProgressStage | null>(null);
+  const [activeField, setActiveField] = useState<string | null>(null);
 
   useEffect(() => {
     return () => {
@@ -34,6 +37,14 @@ export function VerificationWorkspace() {
     setPreviewUrl(URL.createObjectURL(nextFile));
     setError(null);
     setResult(null);
+    setActiveField(null);
+  }
+
+  function loadDemo() {
+    setValues(DEMO_APPLICATION);
+    setError(null);
+    setResult(null);
+    setActiveField(null);
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -50,6 +61,7 @@ export function VerificationWorkspace() {
       const response = await submitVerification(values, file);
       setProgress("compare");
       setResult(response);
+      setActiveField(response.checks.find((check) => check.boundingBox)?.field ?? null);
       window.setTimeout(() => {
         document.getElementById("verification-results")?.scrollIntoView({ behavior: "smooth" });
       }, 50);
@@ -66,6 +78,7 @@ export function VerificationWorkspace() {
   }
 
   const busy = progress !== null;
+  const evidence = result?.checks.find((check) => check.field === activeField) ?? null;
 
   return (
     <>
@@ -90,11 +103,18 @@ export function VerificationWorkspace() {
           </p>
         </section>
         <form className="workflow-grid" onSubmit={handleSubmit}>
-          <ApplicationForm values={values} disabled={busy} onChange={setValues} />
+          <ApplicationForm
+            values={values}
+            disabled={busy}
+            onChange={setValues}
+            onLoadDemo={loadDemo}
+          />
           <UploadPanel
             file={file}
             previewUrl={previewUrl}
             disabled={busy}
+            evidence={evidence}
+            imageDimensions={result?.image ?? null}
             onFile={handleFile}
             onError={setError}
           />
@@ -116,7 +136,16 @@ export function VerificationWorkspace() {
             </button>
           </div>
         </form>
-        {result && <ResultsPanel result={result} />}
+        {result && (
+          <ResultsPanel
+            result={result}
+            activeField={activeField}
+            onSelectCheck={(check) => {
+              setActiveField(check.field);
+              document.getElementById("upload-heading")?.scrollIntoView({ behavior: "smooth" });
+            }}
+          />
+        )}
         <footer className="page-footer">
           LabelGuard AI is a prototype decision-support tool. It does not approve or reject COLA applications.
         </footer>
@@ -124,4 +153,3 @@ export function VerificationWorkspace() {
     </>
   );
 }
-

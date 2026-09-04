@@ -20,7 +20,9 @@ from app.extraction import extract_label
 from app.image_validation import validate_image
 from app.models import ImageMetadata, LabelApplication, StageTimings, VerificationResponse
 from app.ocr.base import OCRProvider, OCRProviderError
+from app.ocr.demo import DemoOCRProvider
 from app.ocr.factory import get_ocr_provider
+from app.preprocessing import preprocess_image
 from app.verification import overall_status, verify_label
 
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"), format="%(message)s")
@@ -109,11 +111,15 @@ async def verify_single_label(
         max_bytes=settings.max_upload_bytes,
         max_pixels=settings.max_image_pixels,
     )
+    processed = preprocess_image(validated)
     image_ms = round((time.perf_counter() - image_started) * 1000)
 
     ocr_started = time.perf_counter()
     try:
-        ocr_result = await provider.extract(validated.content, validated.content_type)
+        if isinstance(provider, DemoOCRProvider):
+            ocr_result = await provider.extract(validated.content, validated.content_type)
+        else:
+            ocr_result = await provider.extract(processed.content, processed.content_type)
     except OCRProviderError as exc:
         logger.warning(
             json.dumps({"request_id": request_id, "event": "ocr_error", "reason": str(exc)})
@@ -170,9 +176,10 @@ async def verify_single_label(
         extracted_text=ocr_result.full_text,
         ocr_provider=ocr_result.provider,
         image=ImageMetadata(
-            width=validated.width,
-            height=validated.height,
+            width=processed.width,
+            height=processed.height,
             format=validated.format,
+            processing_steps=list(processed.applied_steps),
         ),
         stage_timings_ms=StageTimings(
             image_prepare_ms=image_ms,

@@ -17,6 +17,16 @@ export const INITIAL_APPLICATION: ApplicationFormValues = {
   netContentsUnit: "mL",
 };
 
+export const DEMO_APPLICATION: ApplicationFormValues = {
+  applicationId: "COLA-DEMO-001",
+  beverageType: "distilled_spirits",
+  brandName: "OLD TOM DISTILLERY",
+  classType: "Kentucky Straight Bourbon Whiskey",
+  alcoholByVolume: "45",
+  netContentsValue: "750",
+  netContentsUnit: "mL",
+};
+
 export class VerificationRequestError extends Error {
   constructor(message: string) {
     super(message);
@@ -97,4 +107,3 @@ export const STATUS_LABELS: Record<VerificationStatus, string> = {
   review: "Needs review",
   not_applicable: "Not evaluated",
 };
-

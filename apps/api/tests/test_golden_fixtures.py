@@ -30,6 +30,9 @@ def application() -> LabelApplication:
         ("demo-brand-mismatch.png", VerificationStatus.MISMATCH),
         ("demo-abv-mismatch.png", VerificationStatus.MISMATCH),
         ("demo-warning-error.png", VerificationStatus.MISMATCH),
+        ("demo-rotated.png", VerificationStatus.PASS),
+        ("demo-low-contrast.png", VerificationStatus.PASS),
+        ("demo-unreadable.png", VerificationStatus.REVIEW),
     ],
 )
 @pytest.mark.asyncio

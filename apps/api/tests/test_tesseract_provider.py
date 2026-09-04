@@ -45,3 +45,15 @@ async def test_missing_tesseract_becomes_provider_error(
     monkeypatch.setattr(pytesseract, "image_to_data", not_installed)
     with pytest.raises(OCRProviderError, match="not installed"):
         await TesseractOCRProvider().extract(png_bytes, "image/png")
+
+
+@pytest.mark.asyncio
+async def test_tesseract_timeout_becomes_provider_error(
+    monkeypatch: pytest.MonkeyPatch, png_bytes: bytes
+) -> None:
+    def timed_out(*args, **kwargs):
+        raise RuntimeError("Tesseract process timeout")
+
+    monkeypatch.setattr(pytesseract, "image_to_data", timed_out)
+    with pytest.raises(OCRProviderError, match="timed out"):
+        await TesseractOCRProvider(timeout_seconds=0.01).extract(png_bytes, "image/png")

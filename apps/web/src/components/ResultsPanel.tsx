@@ -3,11 +3,29 @@ import { formatDuration, STATUS_LABELS, summarizeChecks } from "@/lib/verificati
 
 interface ResultsPanelProps {
   result: VerificationResponse;
+  activeField: string | null;
+  onSelectCheck: (check: VerificationCheck) => void;
 }
 
-function CheckCard({ check }: { check: VerificationCheck }) {
+function CheckCard({
+  check,
+  active,
+  onSelect,
+}: {
+  check: VerificationCheck;
+  active: boolean;
+  onSelect: (check: VerificationCheck) => void;
+}) {
+  const hasEvidence = Boolean(check.boundingBox);
   return (
-    <div className="check-card">
+    <button
+      className={`check-card${active ? " active" : ""}`}
+      type="button"
+      onClick={() => onSelect(check)}
+      disabled={!hasEvidence}
+      aria-pressed={hasEvidence ? active : undefined}
+      title={hasEvidence ? "Show this evidence on the label" : "No image location is available"}
+    >
       <div className={`check-title status-${check.status}`}>
         <span className="status-dot" aria-hidden="true" />
         <span>{check.label}</span>
@@ -25,11 +43,11 @@ function CheckCard({ check }: { check: VerificationCheck }) {
       </div>
       <span className={`status-badge status-${check.status}`}>{STATUS_LABELS[check.status]}</span>
       <p className="check-explanation">{check.explanation}</p>
-    </div>
+    </button>
   );
 }
 
-export function ResultsPanel({ result }: ResultsPanelProps) {
+export function ResultsPanel({ result, activeField, onSelectCheck }: ResultsPanelProps) {
   const summary = summarizeChecks(result.checks);
   const groups = Array.from(new Set(result.checks.map((check) => check.group)));
   const issueCount = summary.mismatch + summary.missing;
@@ -57,7 +75,12 @@ export function ResultsPanel({ result }: ResultsPanelProps) {
             <h3>{group}</h3>
             <div className="check-list">
               {result.checks.filter((check) => check.group === group).map((check) => (
-                <CheckCard check={check} key={check.field} />
+                <CheckCard
+                  check={check}
+                  active={activeField === check.field}
+                  onSelect={onSelectCheck}
+                  key={check.field}
+                />
               ))}
             </div>
           </div>
@@ -69,8 +92,21 @@ export function ResultsPanel({ result }: ResultsPanelProps) {
           <summary>View extracted OCR text</summary>
           <pre className="evidence-text">{result.extractedText || "No readable text detected."}</pre>
         </details>
+        <details className="evidence-disclosure">
+          <summary>View processing details</summary>
+          <dl className="timing-grid">
+            <div><dt>OCR provider</dt><dd>{result.ocrProvider}</dd></div>
+            <div><dt>Image preparation</dt><dd>{result.stageTimingsMs.imagePrepareMs} ms</dd></div>
+            <div><dt>OCR</dt><dd>{result.stageTimingsMs.ocrMs} ms</dd></div>
+            <div><dt>Field extraction</dt><dd>{result.stageTimingsMs.fieldExtractMs} ms</dd></div>
+            <div><dt>Verification</dt><dd>{result.stageTimingsMs.verificationMs} ms</dd></div>
+            <div>
+              <dt>Image processing</dt>
+              <dd>{result.image.processingSteps?.join(", ") || "None"}</dd>
+            </div>
+          </dl>
+        </details>
       </div>
     </section>
   );
 }
-

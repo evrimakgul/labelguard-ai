@@ -28,7 +28,9 @@ class TesseractOCRProvider:
             raise OCRProviderError(
                 "Tesseract is not installed or TESSERACT_CMD is incorrect."
             ) from exc
-        except (pytesseract.TesseractError, RuntimeError, OSError, ValueError) as exc:
+        except RuntimeError as exc:
+            raise OCRProviderError("Local OCR timed out.") from exc
+        except (pytesseract.TesseractError, OSError, ValueError) as exc:
             raise OCRProviderError("Local OCR could not process the image.") from exc
 
     def _extract_sync(self, image: bytes) -> OCRResult:
@@ -79,7 +81,12 @@ class TesseractOCRProvider:
 
     @classmethod
     def _make_line(cls, words: list[OCRWord]) -> OCRLine:
-        points = [point for word in words for point in word.bounding_box.points]  # type: ignore[union-attr]
+        points = [
+            point
+            for word in words
+            if word.bounding_box is not None
+            for point in word.bounding_box.points
+        ]
         left = min(point.x for point in points)
         top = min(point.y for point in points)
         right = max(point.x for point in points)

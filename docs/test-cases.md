@@ -20,10 +20,14 @@
 | OCR provider failure | Friendly 503 without upstream details |
 | Tesseract adapter output | Words, confidence, lines, and bounding boxes map correctly |
 | Missing Tesseract runtime | Friendly provider error without internal details |
+| EXIF-rotated image | Orientation is corrected and metadata is removed |
+| Low-contrast image | Contrast enhancement is applied |
+| Small skew | Bounded correction angle is detected |
+| Evidence selection | Result selection highlights the matching OCR polygon |
 
 ## Golden fixtures
 
-`tests/fixtures/labels` includes pass, brand mismatch, ABV mismatch, and warning-format regression labels. PNG metadata contains the exact deterministic OCR result used by demo mode; displayed artwork and metadata are generated from the same source values.
+`tests/fixtures/labels` includes pass, brand mismatch, ABV mismatch, warning-format, rotated, low-contrast, and unreadable regression labels. PNG metadata contains the exact deterministic OCR result used by demo mode; displayed artwork and metadata are generated from the same source values. The unreadable fixture intentionally contains no demo metadata.
 
 ## Manual acceptance
 

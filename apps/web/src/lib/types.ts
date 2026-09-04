@@ -46,7 +46,7 @@ export interface VerificationResponse {
   warnings: string[];
   extractedText: string;
   ocrProvider: string;
-  image: { width: number; height: number; format: string };
+  image: { width: number; height: number; format: string; processingSteps?: string[] };
   stageTimingsMs: {
     imagePrepareMs: number;
     ocrMs: number;
@@ -54,4 +54,3 @@ export interface VerificationResponse {
     verificationMs: number;
   };
 }
-

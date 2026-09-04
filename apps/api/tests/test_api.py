@@ -35,6 +35,7 @@ def test_verify_multipart_success(client, png_bytes, application_payload) -> Non
     assert body["overallStatus"] == "pass"
     assert body["ocrProvider"] == "demo-fixture"
     assert body["requestId"].startswith("req_")
+    assert "metadata_removed" in body["image"]["processingSteps"]
     assert any("Demo OCR mode" in warning for warning in body["warnings"])
 
 

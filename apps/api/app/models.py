@@ -135,6 +135,7 @@ class ImageMetadata(APIModel):
     width: int
     height: int
     format: str
+    processing_steps: list[str] = Field(default_factory=list)
 
 
 class VerificationResponse(APIModel):

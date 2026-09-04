@@ -6,7 +6,7 @@ import shutil
 import textwrap
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 from PIL.PngImagePlugin import PngInfo
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -48,6 +48,22 @@ CASES = {
         "warning": WARNING.replace("GOVERNMENT WARNING", "Government Warning").replace(
             "machinery,", "machinery"
         ),
+    },
+    "demo-rotated.png": {
+        "brand": "OLD TOM DISTILLERY",
+        "class_type": "KENTUCKY STRAIGHT BOURBON WHISKEY",
+        "abv": "45% ALC./VOL. (90 PROOF)",
+        "volume": "750 mL",
+        "warning": WARNING,
+        "effect": "rotated",
+    },
+    "demo-low-contrast.png": {
+        "brand": "OLD TOM DISTILLERY",
+        "class_type": "KENTUCKY STRAIGHT BOURBON WHISKEY",
+        "abv": "45% ALC./VOL. (90 PROOF)",
+        "volume": "750 mL",
+        "warning": WARNING,
+        "effect": "low_contrast",
     },
 }
 
@@ -103,6 +119,10 @@ def render_case(name: str, data: dict[str, str]) -> Path:
 
     metadata_lines = [data["brand"], data["class_type"], data["abv"], data["volume"]]
     metadata_lines.extend(warning_lines)
+    if data.get("effect") == "rotated":
+        image = image.rotate(4, resample=Image.Resampling.BICUBIC, fillcolor="#f3ead5")
+    elif data.get("effect") == "low_contrast":
+        image = ImageEnhance.Contrast(image).enhance(0.18)
     metadata = PngInfo()
     metadata.add_text("labelguard_ocr", "\n".join(metadata_lines))
     path = FIXTURE_DIR / name
@@ -116,6 +136,13 @@ def main() -> None:
     for name, data in CASES.items():
         source = render_case(name, data)
         shutil.copy2(source, PUBLIC_DIR / name)
+
+    with Image.open(FIXTURE_DIR / "demo-pass.png") as source:
+        unreadable = source.convert("RGB").filter(ImageFilter.GaussianBlur(20))
+    unreadable = ImageEnhance.Contrast(unreadable).enhance(0.08)
+    unreadable_path = FIXTURE_DIR / "demo-unreadable.png"
+    unreadable.save(unreadable_path, format="PNG", optimize=True)
+    shutil.copy2(unreadable_path, PUBLIC_DIR / unreadable_path.name)
 
 
 if __name__ == "__main__":

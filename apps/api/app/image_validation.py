@@ -46,7 +46,7 @@ def validate_image(
             detected_format = image.format
             width, height = image.size
             image.verify()
-    except (UnidentifiedImageError, OSError, ValueError):
+    except (Image.DecompressionBombError, UnidentifiedImageError, OSError, ValueError):
         raise invalid_image(
             "We could not read this file. Upload a valid JPEG or PNG image."
         ) from None

@@ -1,6 +1,6 @@
 # LabelGuard AI Implementation Plan
 
-## P0 stabilization
+## P0 stabilization — complete
 
 - Preserve the current Next.js, FastAPI, verification, image validation, fixtures, and test work.
 - Make local Tesseract the default OCR provider and retain fixture-only demo OCR.
@@ -9,7 +9,7 @@
 - Reconcile README, specification, deployment, assumptions, limitations, and tests.
 - Run all P0 quality gates and create a local milestone commit before P1.
 
-## P1 completion
+## P1 completion — implemented and verified
 
 - Add EXIF orientation correction, resize safeguards, adaptive contrast, metadata removal, and bounded deskewing.
 - Display clickable OCR bounding-box evidence and processing-stage timing.

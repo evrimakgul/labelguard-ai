@@ -3,10 +3,14 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 
+import type { VerificationCheck } from "@/lib/types";
+
 interface UploadPanelProps {
   file: File | null;
   previewUrl: string | null;
   disabled: boolean;
+  evidence: VerificationCheck | null;
+  imageDimensions: { width: number; height: number } | null;
   onFile: (file: File) => void;
   onError: (message: string) => void;
 }
@@ -18,11 +22,16 @@ export function UploadPanel({
   file,
   previewUrl,
   disabled,
+  evidence,
+  imageDimensions,
   onFile,
   onError,
 }: UploadPanelProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
+  const polygon = evidence?.boundingBox?.points
+    .map((point) => `${point.x},${point.y}`)
+    .join(" ");
 
   function selectFile(candidate?: File) {
     if (!candidate) return;
@@ -80,9 +89,19 @@ export function UploadPanel({
               sizes="(max-width: 820px) 100vw, 42vw"
               unoptimized
             />
+            {polygon && imageDimensions ? (
+              <svg
+                className="evidence-overlay"
+                viewBox={`0 0 ${imageDimensions.width} ${imageDimensions.height}`}
+                preserveAspectRatio="xMidYMid meet"
+                aria-hidden="true"
+              >
+                <polygon points={polygon} />
+              </svg>
+            ) : null}
             <div className="preview-overlay">
               <strong>{file?.name}</strong>
-              <span>Click or drop another image to replace</span>
+              <span>{evidence?.boundingBox ? `Showing evidence: ${evidence.label}` : "Click or drop another image to replace"}</span>
             </div>
           </>
         ) : (
@@ -105,7 +124,9 @@ export function UploadPanel({
         <span aria-hidden="true">◆</span>
         Images are processed in memory and are not retained by LabelGuard AI.
       </p>
+      <a className="demo-download" href="/demo-labels/demo-pass.png" download>
+        Download demo label
+      </a>
     </section>
   );
 }
-

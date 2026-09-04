@@ -16,6 +16,8 @@ The application provides one obvious workflow: enter expected values, upload a J
 
 LabelGuard AI does not approve or reject a COLA application. It preserves human judgment for uncertain and image-dependent requirements.
 
+![LabelGuard AI single-label workflow](docs/screenshots/labelguard-home.png)
+
 ## Features
 
 - Single-label application form and drag-and-drop image upload
@@ -24,7 +26,9 @@ LabelGuard AI does not approve or reject a COLA application. It preserves human 
 - Deterministic brand, class/type, ABV, proof, net-content, and warning rules
 - Exact Government Health Warning heading, wording, and punctuation checks
 - Confidence-aware results that never auto-pass low-confidence OCR
-- Evidence, explanations, stage timings, structured logs, and safe errors
+- Clickable image evidence, explanations, stage timings, structured logs, and safe errors
+- EXIF orientation correction, resize safeguards, adaptive contrast, and bounded deskew
+- One-click demo application loader
 - Deterministic demo provider and downloadable test labels
 - Responsive, keyboard-accessible UI with status words in addition to color
 - Portable Docker packaging and GitHub Actions CI
@@ -152,7 +156,7 @@ See [portable deployment guidance](docs/deployment.md). No external resources ar
 
 ## Performance
 
-Local deterministic benchmarks are recorded after each release. The verification engine target is under 100 ms excluding OCR, and the warm end-to-end target is approximately five seconds or less. Real Tesseract timing must be measured on the final host and must not be inferred from fixture mode.
+The response reports image-preparation, OCR, extraction, verification, and total timings. On this Windows development host, 20 fixture-mode requests measured a 136.2 ms wall median and 169.0 ms p95 (131.5 ms/164.0 ms API-reported). Run `.venv/Scripts/python scripts/benchmark_demo.py` to reproduce it. These numbers exclude live Tesseract and must not be presented as OCR performance. Real OCR must be measured after Tesseract is installed and again on the final host; the warm target remains approximately five seconds or less.
 
 ## Test Data
 
@@ -162,8 +166,13 @@ Download or upload the fixtures under [`tests/fixtures/labels`](tests/fixtures/l
 - `demo-brand-mismatch.png`
 - `demo-abv-mismatch.png`
 - `demo-warning-error.png`
+- `demo-rotated.png`
+- `demo-low-contrast.png`
+- `demo-unreadable.png`
 
 Regenerate them with `.venv/Scripts/python scripts/generate_demo_labels.py`.
+
+For the fastest evaluation, select **Load demo application**, download the demo label from the upload panel, upload it, and select **Verify Label**.
 
 ## Assumptions
 

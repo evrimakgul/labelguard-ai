@@ -10,10 +10,11 @@ Local development runs Next.js on port 3000 and FastAPI on 8000. CORS is limited
 
 1. The browser serializes typed application data and sends one JPEG or PNG as multipart form data.
 2. FastAPI validates the JSON, declared MIME type, decoded image format, byte size, dimensions, and pixel count.
-3. The configured local Tesseract provider returns vendor-neutral lines, words, confidences, and polygons.
-4. Field extraction parses ABV, proof, and volume and selects brand/class candidates without regulatory decisions.
-5. Verification applies deterministic normalization, thresholds, numeric comparisons, and the canonical warning rules.
-6. The API returns explanations, confidence, evidence geometry, and stage timings.
+3. Preprocessing applies EXIF orientation, metadata removal, bounded resizing, adaptive contrast, and small-angle deskewing.
+4. The configured local Tesseract provider returns vendor-neutral lines, words, confidences, and polygons.
+5. Field extraction parses ABV, proof, and volume and selects brand/class candidates without regulatory decisions.
+6. Verification applies deterministic normalization, thresholds, numeric comparisons, and the canonical warning rules.
+7. The API returns explanations, confidence, evidence geometry, processing steps, and stage timings.
 
 ## Concern boundaries
 
@@ -21,6 +22,7 @@ Local development runs Next.js on port 3000 and FastAPI on 8000. CORS is limited
 | --- | --- |
 | Configuration | `apps/api/app/config.py` |
 | Image validation | `apps/api/app/image_validation.py` |
+| Image preprocessing | `apps/api/app/preprocessing.py` |
 | OCR protocol/providers | `apps/api/app/ocr/` |
 | Field extraction | `apps/api/app/extraction.py` |
 | Normalization and verification | `apps/api/app/verification.py` |

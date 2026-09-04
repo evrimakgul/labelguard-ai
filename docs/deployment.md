@@ -17,7 +17,7 @@ Docker Engine can use the same `Dockerfile` and `docker-compose.yml` when its lo
 
 ## Runtime contract
 
-- Linux AMD64 or ARM64 OCI container support
+- Linux OCI container support
 - At least 0.5 CPU and 1 GB memory for the prototype
 - Port supplied through `PORT`, defaulting to `8000`
 - Persistent storage is not required
@@ -36,4 +36,3 @@ Do not select or create a hosted deployment until the provider offers:
 - support for the supplied OCI image without requiring an external OCR API.
 
 After a qualifying host is selected, verify a fresh-browser pass case, mismatch case, invalid-image case, health check, warm processing time, and mobile layout. Record the exact public URL and measured median/p95 timing in README.
-

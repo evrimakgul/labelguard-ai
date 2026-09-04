@@ -4,9 +4,15 @@ interface ApplicationFormProps {
   values: ApplicationFormValues;
   disabled: boolean;
   onChange: (values: ApplicationFormValues) => void;
+  onLoadDemo: () => void;
 }
 
-export function ApplicationForm({ values, disabled, onChange }: ApplicationFormProps) {
+export function ApplicationForm({
+  values,
+  disabled,
+  onChange,
+  onLoadDemo,
+}: ApplicationFormProps) {
   function update<Key extends keyof ApplicationFormValues>(
     key: Key,
     value: ApplicationFormValues[Key],
@@ -22,6 +28,9 @@ export function ApplicationForm({ values, disabled, onChange }: ApplicationFormP
           <h2 id="application-heading">Application details</h2>
           <p className="panel-description">Enter the values the label should contain.</p>
         </div>
+        <button className="secondary-button" type="button" onClick={onLoadDemo} disabled={disabled}>
+          Load demo application
+        </button>
       </div>
       <div className="field-grid">
         <div className="field">
@@ -123,4 +132,3 @@ export function ApplicationForm({ values, disabled, onChange }: ApplicationFormP
     </section>
   );
 }
-
