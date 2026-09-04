@@ -8,6 +8,7 @@ Updated: 2026-09-04
 - P1 implementation committed locally as `37c66f9` (`feat: add image robustness and evidence`).
 - P0/P1 deterministic gates and live Windows Tesseract acceptance pass. The OCI image build passed; remaining acceptance is container startup and health.
 - Podman built `labelguard-ai:local` successfully. The container remains running, and its internal health endpoint returns `{"status":"ok"}`. Windows IPv4 port 8000 is refused while only `::1:8000` is listening, isolating the active gate to Podman/WSL host forwarding.
+- The `::1:8000` listener is `wslrelay.exe`. WSL is `2.7.12.0`; the first machine-address lookup was inconclusive because the minimal Podman machine has no `hostname` executable.
 - P2 intentionally deferred.
 
 ## Current architecture
@@ -52,7 +53,7 @@ On 2026-09-04, Codex corrected the Tesseract segmentation mode and unreadable-te
 
 ### User next
 
-Run the documented relay identity and Podman-machine-address block in `USER_REQUIREMENTS.md`, return its complete output, and leave the container running.
+Run the single documented Podman-machine route lookup in `USER_REQUIREMENTS.md`, return its complete output, and leave the container running.
 
 ### Codex next
 
@@ -60,7 +61,7 @@ After receiving that output, inspect the running container, verify bundled Tesse
 
 ## Remaining delivery path
 
-1. User runs the documented relay identity and Podman-machine-address block and returns the requested output.
+1. User runs the documented Podman-machine route lookup and returns the requested output.
 2. Codex resolves host forwarding, then verifies Tesseract and application behavior inside the running container, benchmarks live OCR, runs all automated gates, and updates README evidence.
 3. Codex performs repository/secrets/CI readiness review.
 4. The temporary no-push gate is lifted only after container acceptance passes.
