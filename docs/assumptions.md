@@ -11,7 +11,7 @@
 9. The fixture-only demo provider reads explicit metadata embedded in repository fixtures. It returns no text for arbitrary images.
 10. Normal operation uses local Tesseract and requires no OCR API key, paid service, or cloud subscription.
 11. Tesseract 5.5.3 with English and orientation data is installed on the current Windows host.
-12. Podman 6.0.2 is the selected free OCI engine. Its rootless WSL2 machine is operational and the image build passes; runtime health diagnosis remains pending after the first request closed unexpectedly.
+12. Podman 6.0.2 is the selected free OCI engine. Its rootless WSL2 machine, image build, and container process startup pass; Windows host forwarding remains under diagnosis.
 13. GitHub CLI is authenticated through the operating-system keyring, and no GitHub token belongs in project configuration.
 14. No final public host will be selected until it provides HTTPS without billing information, a payment method, prepaid credits, or a paid subscription.
 15. Deterministic fixtures do not replace live OCR evidence; the current Windows Tesseract acceptance and benchmark therefore run as separate opt-in checks.

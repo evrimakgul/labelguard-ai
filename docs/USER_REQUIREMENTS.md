@@ -53,29 +53,30 @@ Do not send a personal access token in chat and do not place one in `.env`. The 
 
 The production Tesseract provider passes all seven repository label cases, including corrected brand detection and Needs Review handling for unreadable OCR. A 20-request live benchmark also passes.
 
-## Single next action now: Podman startup diagnosis
+## Completed: Podman process diagnosis
 
-Run this read-only block from a new PowerShell window at the repository root. Do not rebuild or remove the container yet:
+The container remained running for at least 15 minutes with exit code `0`. Its logs show application startup completed and Uvicorn listening on `0.0.0.0:8000`; Podman reports `0.0.0.0:8000->8000/tcp`. A delayed request to `localhost` still closed unexpectedly. The application process is therefore stable, and diagnosis now moves to the in-container endpoint and Windows IPv4 forwarding path.
+
+## Single next action now: internal and IPv4 health diagnosis
+
+Run this read-only block from a PowerShell window at the repository root. Do not rebuild, restart, stop, or remove the container:
 
 ```powershell
 Set-Location C:\Users\Evrim\Documents\PROJECTS\labelguard-ai
-podman ps --all --filter name=labelguard-ai-local
-podman inspect labelguard-ai-local --format "status={{.State.Status}} exitCode={{.State.ExitCode}} error={{.State.Error}}"
-podman logs --tail 200 labelguard-ai-local
-Start-Sleep -Seconds 5
-try { Invoke-RestMethod http://localhost:8000/api/health | ConvertTo-Json -Compress } catch { Write-Output $_.Exception.Message }
-podman port labelguard-ai-local
+podman exec labelguard-ai-local python -c "import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=5).read().decode())"
+Test-NetConnection -ComputerName 127.0.0.1 -Port 8000
+curl.exe --verbose --noproxy "*" --max-time 10 http://127.0.0.1:8000/api/health
+Get-NetTCPConnection -LocalPort 8000 -State Listen -ErrorAction SilentlyContinue | Select-Object LocalAddress,LocalPort,OwningProcess
 ```
 
-Expected success if this was only a startup race:
+Expected evidence:
 
-- status is `running`, exit code is `0`, and the logs show Uvicorn listening on port `8000`;
-- the retry prints compact JSON containing `"status":"ok"`;
-- `podman port` shows the host mapping to `8000`.
+- The internal probe should print `{"status":"ok"}`. This proves the packaged application is healthy.
+- `Test-NetConnection` should report whether the Windows IPv4 port is reachable.
+- `curl.exe` should show the exact IPv4 connection and HTTP response, or the transport failure.
+- The final command identifies any Windows process already listening on port `8000`.
 
-If status is `exited`, or the retry still fails, the logs and inspect line are the required diagnosis. Do not run cleanup or a second `podman run` yet.
-
-Return the complete PowerShell output to Codex. If the container is running, leave it running. Codex will then determine whether the issue is startup timing, a process failure, or port forwarding before prescribing the next command.
+Return the complete PowerShell output to Codex and leave the container running. If the internal probe succeeds but both Windows probes fail, the remaining defect is Podman/WSL port forwarding rather than LabelGuard startup.
 
 ## OCI `HEALTHCHECK` warning
 

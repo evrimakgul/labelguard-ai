@@ -7,7 +7,7 @@ Updated: 2026-09-04
 - P0 implementation committed locally as `d9dd867` (`feat: implement local single-label verification`).
 - P1 implementation committed locally as `37c66f9` (`feat: add image robustness and evidence`).
 - P0/P1 deterministic gates and live Windows Tesseract acceptance pass. The OCI image build passed; remaining acceptance is container startup and health.
-- Podman built `labelguard-ai:local` successfully and created `labelguard-ai-local`; the first immediate health request closed unexpectedly before the remaining checks ran. Container diagnosis is now the active gate.
+- Podman built `labelguard-ai:local` successfully. The container remains running with exit code `0`, Uvicorn reports startup complete, and port `8000` is published; delayed Windows `localhost` health requests still close unexpectedly. Internal endpoint and IPv4 forwarding diagnosis is now the active gate.
 - P2 intentionally deferred.
 
 ## Current architecture
@@ -35,7 +35,7 @@ Updated: 2026-09-04
 
 - Tesseract `5.5.3.20260724` is installed and available from PowerShell.
 - Tesseract language data includes `eng` and `osd`.
-- Podman `6.0.2` is installed. `podman-machine-default` runs under WSL2 in rootless mode, and `podman info` succeeds. The image build passed; runtime health is unresolved.
+- Podman `6.0.2` is installed. `podman-machine-default` runs under WSL2 in rootless mode, and `podman info` succeeds. The image build and container process startup pass; host access is unresolved.
 - GitHub CLI authentication is active through the operating-system keyring. No token is stored in `.env` or Git.
 
 ## Live Tesseract evidence
@@ -52,7 +52,7 @@ On 2026-09-04, Codex corrected the Tesseract segmentation mode and unreadable-te
 
 ### User next
 
-Run the documented Podman startup diagnosis block in `USER_REQUIREMENTS.md` and return its complete output. Leave the container running if it is healthy.
+Run the documented internal and Windows IPv4 health diagnosis block in `USER_REQUIREMENTS.md`, return its complete output, and leave the container running.
 
 ### Codex next
 
@@ -60,8 +60,8 @@ After receiving that output, inspect the running container, verify bundled Tesse
 
 ## Remaining delivery path
 
-1. User runs the documented Podman startup diagnosis block and returns the requested output.
-2. Codex resolves startup/port behavior, then verifies Tesseract and application behavior inside the running container, benchmarks live OCR, runs all automated gates, and updates README evidence.
+1. User runs the documented internal and Windows IPv4 health diagnosis block and returns the requested output.
+2. Codex resolves host forwarding, then verifies Tesseract and application behavior inside the running container, benchmarks live OCR, runs all automated gates, and updates README evidence.
 3. Codex performs repository/secrets/CI readiness review.
 4. The temporary no-push gate is lifted only after container acceptance passes.
 5. A qualifying no-cost public host is selected, explicitly authorized, deployed, and verified over HTTPS.
