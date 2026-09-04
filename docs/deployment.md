@@ -4,7 +4,9 @@ LabelGuard AI ships as one OCI-compatible Linux container. It contains the expor
 
 ## Build and run
 
-Podman is the preferred free local engine:
+Podman is the preferred free local engine. The commands below are reference-only until `PROJECT_STATUS.md` says the live OCR gate is cleared:
+
+Current status: Podman 6.0.2 and its rootless WSL2 machine are operational, but no LabelGuard image or container exists. Live OCR remediation must pass before the first final container build to avoid validating a known-defective revision.
 
 ```powershell
 podman build -t labelguard-ai:local .
@@ -12,6 +14,8 @@ podman run --rm -p 8000:8000 labelguard-ai:local
 ```
 
 Then check `http://localhost:8000/api/health` and the application at `http://localhost:8000`.
+
+The authoritative staged command block, expected output, and handoff instructions are maintained in `USER_REQUIREMENTS.md`.
 
 Docker Engine can use the same `Dockerfile` and `docker-compose.yml` when its local licensing is appropriate. Docker Desktop is not required.
 

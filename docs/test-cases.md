@@ -38,4 +38,6 @@
 5. Repeat with mismatch fixtures and confirm the relevant issue is explained.
 6. Upload a text file renamed as PNG and confirm the API rejects it without a stack trace.
 7. Check desktop and mobile layouts with keyboard-only navigation.
-8. With Tesseract installed, repeat the pass fixture in normal production mode.
+8. With Tesseract installed, repeat the pass, rotated, low-contrast, and unreadable fixtures in normal production mode.
+
+Current live result on 2026-09-04: **failed**. Tesseract omitted the pass fixture's brand heading, and the unreadable fixture produced an overall Mismatch instead of Needs Review. These are open Codex remediation items in `PROJECT_STATUS.md`; container acceptance must not be marked complete from demo-provider results.

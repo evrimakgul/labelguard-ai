@@ -4,7 +4,11 @@ LabelGuard AI is a standalone decision-support prototype that compares U.S. alco
 
 ## Live Demo
 
-The application runs locally and in Docker without a paid service. A public host has intentionally not been selected; any future host must provide public HTTPS without billing information, a payment method, credits, or a paid subscription.
+The application runs locally without a paid service. The OCI image is configured but has not yet completed its first local build/run acceptance. A public host has intentionally not been selected; any future host must provide public HTTPS without billing information, a payment method, credits, or a paid subscription.
+
+## Current Status
+
+P0/P1 implementation and deterministic gates are complete, but the first live Tesseract acceptance found that the pass fixture's brand line is not detected. Codex remediation is the current gate; container acceptance, push, and deployment follow afterward. See [project status](docs/PROJECT_STATUS.md) and [user requirements](docs/USER_REQUIREMENTS.md).
 
 ## Problem
 
@@ -68,8 +72,7 @@ The implementation follows the [TTB Health Warning guidance](https://www.ttb.gov
 ## Technology Choices
 
 - Next.js 16, React 19, and TypeScript for a compact accessible interface
-- FastAPI, Pydantic, Pillow, and pytesseract for typed request handling and local OCR
-- Tesseract and pytesseract for local OCR with word confidence and geometry
+- FastAPI, Pydantic, Pillow, OpenCV, Tesseract, and pytesseract for typed requests, preprocessing, and local OCR
 - Pytest, Ruff, Vitest, Testing Library, ESLint, and TypeScript for quality gates
 - One multi-stage container for portable deployment on any qualifying host
 
@@ -134,13 +137,14 @@ npm test
 npm run build
 ```
 
-## Docker
+## OCI Container
 
-```bash
-docker compose up --build
+```powershell
+podman build --tag labelguard-ai:local .
+podman run --rm --publish 8000:8000 labelguard-ai:local
 ```
 
-The image installs Tesseract and English language data. No host OCR installation, credentials, or paid service is required. The app is available at `http://localhost:8000`.
+The image installs Tesseract and English language data. No host OCR installation, credentials, or paid service is required. Local container acceptance is still pending and must use the staged procedure in [user requirements](docs/USER_REQUIREMENTS.md).
 
 ## Deployment
 
@@ -156,7 +160,9 @@ See [portable deployment guidance](docs/deployment.md). No external resources ar
 
 ## Performance
 
-The response reports image-preparation, OCR, extraction, verification, and total timings. On this Windows development host, 20 fixture-mode requests measured a 136.2 ms wall median and 169.0 ms p95 (131.5 ms/164.0 ms API-reported). Run `.venv/Scripts/python scripts/benchmark_demo.py` to reproduce it. These numbers exclude live Tesseract and must not be presented as OCR performance. Real OCR must be measured after Tesseract is installed and again on the final host; the warm target remains approximately five seconds or less.
+The response reports image-preparation, OCR, extraction, verification, and total timings. On this Windows development host, 20 fixture-mode requests measured a 136.2 ms wall median and 169.0 ms p95 (131.5 ms/164.0 ms API-reported). Run `.venv/Scripts/python scripts/benchmark_demo.py` to reproduce it.
+
+A 2026-09-04 live Tesseract smoke test completed individual fixtures in 457–823 ms, but correctness failed because the brand line was not detected. These diagnostic timings are not an accepted benchmark. Live benchmarking resumes only after the OCR defect is fixed; the warm target remains approximately five seconds or less.
 
 ## Test Data
 

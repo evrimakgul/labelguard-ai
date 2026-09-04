@@ -10,7 +10,9 @@
 8. Uploaded images and application values are transient and are not retained.
 9. The fixture-only demo provider reads explicit metadata embedded in repository fixtures. It returns no text for arbitrary images.
 10. Normal operation uses local Tesseract and requires no OCR API key, paid service, or cloud subscription.
-11. Tesseract is not installed on the current Windows host; fixture OCR keeps deterministic development unblocked, and the container installs the complete runtime.
-12. Podman is the selected free OCI engine for future local container verification because it requires no hosted account or payment information.
-13. No final public host will be selected until it provides HTTPS without billing information, a payment method, prepaid credits, or a paid subscription.
-14. LabelGuard AI provides decision support and never represents an official TTB determination.
+11. Tesseract 5.5.3 with English and orientation data is installed on the current Windows host.
+12. Podman 6.0.2 is the selected free OCI engine. Its rootless WSL2 machine is operational; image build/run acceptance is still pending.
+13. GitHub CLI is authenticated through the operating-system keyring, and no GitHub token belongs in project configuration.
+14. No final public host will be selected until it provides HTTPS without billing information, a payment method, prepaid credits, or a paid subscription.
+15. Deterministic fixture success does not establish live OCR correctness; the current live brand-detection failure blocks submission readiness.
+16. LabelGuard AI provides decision support and never represents an official TTB determination.
