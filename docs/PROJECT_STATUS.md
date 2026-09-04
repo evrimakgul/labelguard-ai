@@ -5,7 +5,7 @@ Updated: 2026-09-04
 ## Milestones
 
 - P0 complete and committed locally as `d9dd867` (`feat: implement local single-label verification`).
-- P1 implemented and verified: preprocessing, confidence, bounding-box evidence, demo loading, timing, and regression fixtures.
+- P1 complete and committed locally as `37c66f9` (`feat: add image robustness and evidence`).
 - P2 intentionally deferred.
 
 ## Current architecture
