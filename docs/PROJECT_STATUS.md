@@ -1,6 +1,10 @@
 # Project Status
 
-Updated: 2026-09-04
+Updated: 2026-09-06
+
+## Resuming after power interruption
+
+The user has returned after another computer restart. The saved pre-restart state had `podman-machine-default` Running and the existing LabelGuard container Exited with code `0`; the last known route was `192.168.70.113`. Refresh the container state and route before continuing. Earlier health, listener PID, and IP findings below are historical evidence. The displayed exit age of `292 years ago` is unreliable and must not be interpreted as an actual elapsed time.
 
 ## Milestones
 
@@ -9,7 +13,7 @@ Updated: 2026-09-04
 - P0/P1 deterministic gates and live Windows Tesseract acceptance pass. OCI build, startup, and internal health pass; remaining acceptance is Windows host access and end-to-end container behavior.
 - Podman built `labelguard-ai:local` successfully. The container remains running, and its internal health endpoint returns `{"status":"ok"}`. Windows IPv4 port 8000 is refused while only `::1:8000` is listening, isolating the active gate to Podman/WSL host forwarding.
 - The `::1:8000` listener is `wslrelay.exe`. WSL is `2.7.12.0`; the first machine-address lookup was inconclusive because the minimal Podman machine has no `hostname` executable.
-- The Podman-machine routing table identifies `192.168.70.113` as its current `eth0` source address; direct Windows access to that address is the next read-only test.
+- Before the latest restart, the Podman-machine routing table identified `192.168.70.113` on `eth0`. The next documented block refreshes the address and starts the existing container before connectivity tests.
 - P2 intentionally deferred.
 
 ## Current architecture
@@ -54,7 +58,7 @@ On 2026-09-04, Codex corrected the Tesseract segmentation mode and unreadable-te
 
 ### User next
 
-Run the documented direct Podman-machine IPv4 test in `USER_REQUIREMENTS.md`, return its complete output, and leave the container running.
+Run the documented refresh, existing-container start, and health-check block in `USER_REQUIREMENTS.md` and return all output.
 
 ### Codex next
 
@@ -62,7 +66,7 @@ After receiving that output, inspect the running container, verify bundled Tesse
 
 ## Remaining delivery path
 
-1. User runs the documented direct Podman-machine IPv4 test and returns the requested output.
+1. User refreshes the machine address, starts the existing container, and repeats internal and Windows health checks using the documented block.
 2. Codex resolves host forwarding, then verifies Tesseract and application behavior inside the running container, benchmarks live OCR, runs all automated gates, and updates README evidence.
 3. Codex performs repository/secrets/CI readiness review.
 4. The temporary no-push gate is lifted only after container acceptance passes.

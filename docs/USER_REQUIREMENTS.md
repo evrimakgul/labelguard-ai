@@ -69,25 +69,36 @@ PID `29440` is `C:\Program Files\WSL\wslrelay.exe`, confirming that the IPv6 lis
 
 ## Completed: Podman-machine IPv4 lookup
 
-The routing table reports `192.168.70.113` as the current Podman-machine source address on `eth0`. This address is diagnostic and can change after restarting the Podman machine.
+Before the power interruption, the routing table reported `192.168.70.113` on `eth0`. That address and the previously recorded relay PID are historical; neither should be reused without checking after restart.
 
-## Single next action now: test the Podman-machine IPv4
+## Completed: state check before the latest restart
 
-Run this exact read-only block from PowerShell. Do not substitute an address, restart anything, or remove the container:
+On 2026-09-05, the machine was Running, but the existing `labelguard-ai-local` container (`cd25d4bdea02`) was Exited with code `0`. The route lookup reported `192.168.70.113` on `eth0`. The displayed exit age of `292 years ago` is unreliable timestamp information, not an actual age or evidence of data loss. After the latest computer restart, refresh both values.
+
+## Single next action now: refresh address, start the existing container, and recheck health
+
+Run this block in PowerShell. It refreshes the machine address, starts the existing container with its existing image and port mapping, then checks application health internally and from Windows. If `podman start` fails, stop there and return its error.
 
 ```powershell
 Set-Location C:\Users\Evrim\Documents\PROJECTS\labelguard-ai
-Test-NetConnection -ComputerName 192.168.70.113 -Port 8000
-curl.exe --verbose --noproxy "*" --max-time 10 http://192.168.70.113:8000/api/health
+$podmanMachineRoute = wsl.exe --distribution podman-machine-default --exec ip -4 route get 1.1.1.1
+$podmanMachineIp = [regex]::Match(($podmanMachineRoute -join ' '), '\bsrc\s+(\d{1,3}(?:\.\d{1,3}){3})\b').Groups[1].Value
+Write-Output "Podman machine IPv4: $podmanMachineIp"
+podman start labelguard-ai-local
+Start-Sleep -Seconds 5
+podman logs --tail 30 labelguard-ai-local
+podman exec labelguard-ai-local python -c "import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=5).read().decode())"
+curl.exe --verbose --noproxy "*" --max-time 10 http://127.0.0.1:8000/api/health
+curl.exe --verbose --noproxy "*" --max-time 10 "http://${podmanMachineIp}:8000/api/health"
 ```
 
 Expected evidence:
 
-- `Test-NetConnection` reports whether Windows can reach port `8000` on the Podman-machine address.
-- If reachable, `curl.exe` returns HTTP `200` with `{"status":"ok"}`.
-- If refused or timed out, the output confirms that neither WSL localhost relay nor direct machine-address access works.
+- Start prints the container name; logs should show Uvicorn startup completed.
+- Internal health should return `{"status":"ok"}`.
+- Each Windows probe either returns HTTP `200` with `{"status":"ok"}` or records the remaining connection failure. Run both probes even if the first fails.
 
-Return the complete output to Codex and leave the container running.
+Return the complete output and leave the container running. Codex will use these results to continue container acceptance or isolate the remaining forwarding failure. No rebuild or replacement container is needed for this step.
 
 ## OCI `HEALTHCHECK` warning
 
