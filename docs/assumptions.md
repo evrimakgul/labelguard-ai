@@ -16,3 +16,6 @@
 14. No final public host will be selected until it provides HTTPS without billing information, a payment method, prepaid credits, or a paid subscription.
 15. Deterministic fixtures do not replace live OCR evidence; the current Windows Tesseract acceptance and benchmark therefore run as separate opt-in checks.
 16. LabelGuard AI provides decision support and never represents an official TTB determination.
+17. Codex executes all accessible local verification and runtime operations. Sandbox approval is distinct from a user running commands manually; approved host access to Podman, WSL and the GitHub keyring works.
+18. Direct Podman-machine IP access is sufficient for local acceptance while Windows localhost forwarding is unavailable. A public HTTPS URL remains required for final delivery.
+19. The current P1 inventory follows the accepted continuation plan; producer/importer and country-of-origin checks are deferred expanded beverage rules. SPEC now reflects that scope explicitly.

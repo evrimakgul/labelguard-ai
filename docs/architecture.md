@@ -31,6 +31,16 @@ Local development runs Next.js on port 3000 and FastAPI on 8000. CORS is limited
 
 The verification layer imports no Tesseract code. Tests inject providers through FastAPI dependency overrides.
 
+## Engineering constraints migrated from AGENTS
+
+Default stack: Next.js/React/TypeScript, FastAPI/Python, Pillow and OpenCV only as needed, pytest and appropriate TypeScript tests. Use Playwright when end-to-end coverage adds value. Keep Docker/OCI packaging and GitHub Actions; GitHub source control uses `main` as the primary branch. Change the stack only for a strong documented technical reason.
+
+Keep image validation, preprocessing, OCR, extraction, normalization, verification, and presentation separate. OCR contains no regulatory rules; verification has no provider dependency. The OCRProvider interface is specified in SPEC section 3.8; its implementation is in `apps/api/app/ocr/base.py`.
+
+Do not introduce a database without a real requirement, queues for the basic prototype, unnecessary infrastructure, microservices without clear value, or an LLM for deterministic comparisons. A working core takes priority over optional complexity.
+
+Product copy must never say `TTB Approved`, `Application Approved`, or `Regulatory Approval Granted`. Use `Verification complete`, `All automated checks passed`, `Mismatch detected`, `Manual review required`, or `Needs review`, consistent with SPEC and human decision support.
+
 ## Security boundaries
 
 - No database or durable upload storage

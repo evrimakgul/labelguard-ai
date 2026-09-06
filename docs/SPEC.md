@@ -1,4 +1,6 @@
-# LabelGuard AI — Treasury Take-Home Implementation Plan
+# LabelGuard AI — Treasury Take-Home Specification
+
+The scope inventory below incorporates the accepted continuation plan and requirements formerly in AGENTS.md. It governs the current prototype; later batch/expanded-model sections describe deferred designs, not required implemented features. PROJECT_STATUS records evidence; IMPLEMENTATION_PLAN records the current execution gate.
 
 ## 1. Executive Summary
 
@@ -90,25 +92,41 @@ These requirements must work before any optional feature is added.
 | Processing speed         | Normal image target ≤5 seconds                           |
 | Deployment               | Public HTTPS URL works without login                     |
 | Repository               | Clean README, setup, tests, architecture and limitations |
+| Application form         | Required values can be entered and validated |
+| Image validation         | Reject invalid encodings, types, oversize and excessive pixels |
+| OCR integration          | Local Tesseract production path behind OCRProvider |
+| Result statuses          | Pass, Mismatch, Missing, Needs Review are explainable |
+| Error handling           | Useful errors without internals; preserve entered values |
+| Automated tests          | Deterministic provider/rules tests plus separate live acceptance |
+| Docker support           | Portable image builds and serves a working application |
+| Production build         | Frontend static export succeeds |
+| Deployment configuration | Provider-neutral runtime and CI configuration |
+| Documentation            | README, assumptions, limitations, setup and run instructions |
+| Demo/test data           | Bundled sample application and regression images |
 
 The five-second requirement should be treated as a product requirement rather than a cosmetic optimization because the stakeholder explicitly identifies slow processing as the reason the previous system was abandoned.
 
 ### P1 requirements
 
-Add these after the P0 vertical slice works:
+Add these only after P0 is stable (accepted continuation scope):
 
-* producer/importer name
-* country of origin
-* image rotation correction
-* contrast correction
-* result bounding boxes
+* image orientation correction
+* contrast improvement
+* basic deskewing
+* OCR confidence handling
+* bounding boxes or detected-text evidence
+* demo application loader
+* performance instrumentation
+* additional regression fixtures
 
 ### P2 requirements
 
 Only add these if P0 and P1 are stable:
 
 * batch upload
-* CSV export
+* CSV application import and result export
+* batch progress and filtering
+* producer/importer and country-of-origin checks (expanded beverage rules, deferred by the accepted continuation plan)
 * warning bold-style estimation
 * batch retry controls
 * advanced perspective correction
@@ -138,7 +156,7 @@ Use the sample values from the assignment:
 
 Create a clean test label that contains these values and the required warning.
 
-At the end of this phase, the deployed application must already be able to process one image and return a useful result.
+At the end of this phase, the locally running application must process one image and return a useful result. Public deployment follows the acceptance and authorization gates in IMPLEMENTATION_PLAN.md.
 
 Do not build batch processing before this path works.
 
@@ -1153,9 +1171,8 @@ For the prototype:
 * do not store uploaded images
 * process them in memory
 * delete temporary files immediately
-* keep OCR credentials server-side
 * use environment variables
-* never expose OCR keys to the browser
+* no OCR keys or service credentials are required by local Tesseract
 * validate MIME type and actual image encoding
 * reject excessive dimensions
 * enforce maximum upload size
@@ -1440,9 +1457,9 @@ Include these before submission:
 * physical font dimensions cannot be established from arbitrary images
 * same-field-of-vision rules cannot always be proven from one photograph
 * beverage-specific regulatory requirements are not fully implemented
-* batch processing is prototype-scale
+* batch processing is deferred
 * no COLAs integration exists
-* OCR service availability affects processing
+* local OCR runtime and language data must be installed
 
 Showing these limitations is preferable to presenting uncertain automation as reliable.
 
@@ -1484,7 +1501,7 @@ The implementation order should be:
 15. Final deployment verification
 ```
 
-This order keeps a working deployed version available throughout development.
+This is the original proposed sequence. The accepted continuation sequence in IMPLEMENTATION_PLAN.md defers batch work and public deployment until local/container acceptance and explicit authorization; a deployed version is not required during local implementation.
 
 ---
 
@@ -1511,7 +1528,7 @@ Do not submit until all of these are true:
 * error workflow succeeds
 * mobile-width layout does not break
 * no console errors
-* OCR credentials work in production
+* local Tesseract and English language data work in production
 * application does not sleep during evaluation if avoidable
 
 ### README
