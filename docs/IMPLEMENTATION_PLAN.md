@@ -19,10 +19,10 @@ P0 and P1 are stable locally. Do not add P2 scope while container and delivery a
 - Sparse unreadable OCR produces Needs Review rather than Mismatch.
 - Deterministic regressions, seven opt-in live cases, and a 20-request live benchmark pass.
 
-## Current gate: Podman/WSL forwarding diagnosis — User then Codex
+## Current gate: end-to-end container verification — User then Codex
 
-- Image build, container startup, and internal health are confirmed. The user runs the read-only relay identity and Podman-machine-address block in `USER_REQUIREMENTS.md` and returns its complete output.
-- Codex verifies health, bundled Tesseract, pass/mismatch/review/error browser flows, logs, mobile layout, and live timings through the container.
+- Image build, container startup, internal health, and direct machine-address health are confirmed. The user runs the end-to-end verification block in `USER_REQUIREMENTS.md` and returns its complete output.
+- Codex verifies bundled Tesseract, pass/mismatch/review/error browser flows, logs, mobile layout, and live timings through the direct machine address.
 
 ## Deferred
 

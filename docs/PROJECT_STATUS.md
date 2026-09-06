@@ -10,10 +10,10 @@ The user has returned after another computer restart. The saved pre-restart stat
 
 - P0 implementation committed locally as `d9dd867` (`feat: implement local single-label verification`).
 - P1 implementation committed locally as `37c66f9` (`feat: add image robustness and evidence`).
-- P0/P1 deterministic gates and live Windows Tesseract acceptance pass. OCI build, startup, and internal health pass; remaining acceptance is Windows host access and end-to-end container behavior.
-- Podman built `labelguard-ai:local` successfully. The container remains running, and its internal health endpoint returns `{"status":"ok"}`. Windows IPv4 port 8000 is refused while only `::1:8000` is listening, isolating the active gate to Podman/WSL host forwarding.
+- P0/P1 deterministic gates and live Windows Tesseract acceptance pass. OCI build, startup, internal health, and direct Podman-machine health pass; remaining acceptance is end-to-end container behavior.
+- Podman built `labelguard-ai:local` successfully. The restarted container is healthy internally and reachable at `192.168.70.113:8000`; Windows `127.0.0.1:8000` remains refused because the WSL relay exposes only IPv6 loopback.
 - The `::1:8000` listener is `wslrelay.exe`. WSL is `2.7.12.0`; the first machine-address lookup was inconclusive because the minimal Podman machine has no `hostname` executable.
-- Before the latest restart, the Podman-machine routing table identified `192.168.70.113` on `eth0`. The next documented block refreshes the address and starts the existing container before connectivity tests.
+- After the latest restart, the Podman-machine routing table again identifies `192.168.70.113` on `eth0`. Direct machine-address access is now the supported local container test URL.
 - P2 intentionally deferred.
 
 ## Current architecture
@@ -58,7 +58,7 @@ On 2026-09-04, Codex corrected the Tesseract segmentation mode and unreadable-te
 
 ### User next
 
-Run the documented refresh, existing-container start, and health-check block in `USER_REQUIREMENTS.md` and return all output.
+Run the documented container end-to-end verification block in `USER_REQUIREMENTS.md` and return all output.
 
 ### Codex next
 
@@ -66,8 +66,8 @@ After receiving that output, inspect the running container, verify bundled Tesse
 
 ## Remaining delivery path
 
-1. User refreshes the machine address, starts the existing container, and repeats internal and Windows health checks using the documented block.
-2. Codex resolves host forwarding, then verifies Tesseract and application behavior inside the running container, benchmarks live OCR, runs all automated gates, and updates README evidence.
+1. User runs the documented container end-to-end verification block and returns all output.
+2. Codex verifies browser behavior through the direct machine address, benchmarks live OCR, runs all automated gates, and updates README evidence.
 3. Codex performs repository/secrets/CI readiness review.
 4. The temporary no-push gate is lifted only after container acceptance passes.
 5. A qualifying no-cost public host is selected, explicitly authorized, deployed, and verified over HTTPS.

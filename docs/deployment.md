@@ -4,9 +4,9 @@ LabelGuard AI ships as one OCI-compatible Linux container. It contains the expor
 
 ## Build and run
 
-Podman is the preferred free local engine. The image build, container process startup, and internal health endpoint have passed on the current host; Windows host access and application checks remain pending:
+Podman is the preferred free local engine. The image build, container process startup, internal health endpoint, and direct machine-address health have passed on the current host; end-to-end application checks remain pending:
 
-Current status: Podman 6.0.2 and its rootless WSL2 machine are operational. `labelguard-ai:local` returns healthy inside the container, but Windows refuses `127.0.0.1:8000` and exposes only an IPv6 listener. Use the staged forwarding diagnosis in `USER_REQUIREMENTS.md` before rerunning acceptance.
+Current status: Podman 6.0.2 and its rootless WSL2 machine are operational. `labelguard-ai:local` returns healthy inside the container and through the current machine address `192.168.70.113:8000`; Windows `127.0.0.1:8000` remains unavailable through the WSL relay. Use the staged end-to-end block in `USER_REQUIREMENTS.md`.
 
 ```powershell
 podman build -t labelguard-ai:local .

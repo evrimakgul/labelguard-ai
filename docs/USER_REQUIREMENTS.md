@@ -75,30 +75,39 @@ Before the power interruption, the routing table reported `192.168.70.113` on `e
 
 On 2026-09-05, the machine was Running, but the existing `labelguard-ai-local` container (`cd25d4bdea02`) was Exited with code `0`. The route lookup reported `192.168.70.113` on `eth0`. The displayed exit age of `292 years ago` is unreliable timestamp information, not an actual age or evidence of data loss. After the latest computer restart, refresh both values.
 
-## Single next action now: refresh address, start the existing container, and recheck health
+## Completed: container restart and direct health checks
 
-Run this block in PowerShell. It refreshes the machine address, starts the existing container with its existing image and port mapping, then checks application health internally and from Windows. If `podman start` fails, stop there and return its error.
+After the latest restart, the existing container starts successfully. Internal health returns `{"status":"ok"}`. Windows IPv4 loopback remains refused, but direct access through the refreshed Podman-machine address `192.168.70.113:8000` returns HTTP `200` and `{"status":"ok"}`. This confirms the container can be tested through the machine address while the WSL localhost relay remains an environment limitation.
+
+## Single next action now: verify the container end to end
+
+Run this exact block in PowerShell. It checks the bundled Tesseract runtime, the static application, health, and three live OCR outcomes through the working Podman-machine address. Leave the container running and return all output.
 
 ```powershell
 Set-Location C:\Users\Evrim\Documents\PROJECTS\labelguard-ai
 $podmanMachineRoute = wsl.exe --distribution podman-machine-default --exec ip -4 route get 1.1.1.1
 $podmanMachineIp = [regex]::Match(($podmanMachineRoute -join ' '), '\bsrc\s+(\d{1,3}(?:\.\d{1,3}){3})\b').Groups[1].Value
-Write-Output "Podman machine IPv4: $podmanMachineIp"
-podman start labelguard-ai-local
-Start-Sleep -Seconds 5
-podman logs --tail 30 labelguard-ai-local
-podman exec labelguard-ai-local python -c "import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=5).read().decode())"
-curl.exe --verbose --noproxy "*" --max-time 10 http://127.0.0.1:8000/api/health
-curl.exe --verbose --noproxy "*" --max-time 10 "http://${podmanMachineIp}:8000/api/health"
+$labelGuardUrl = "http://${podmanMachineIp}:8000"
+Write-Output "LabelGuard URL: $labelGuardUrl"
+podman exec labelguard-ai-local tesseract --version
+podman exec labelguard-ai-local tesseract --list-langs
+curl.exe --silent --show-error --noproxy "*" --max-time 10 "$labelGuardUrl/" -o NUL -w 'root_http=%{http_code}\n'
+curl.exe --silent --show-error --noproxy "*" --max-time 10 "$labelGuardUrl/api/health"
+$application = '{"applicationId":"COLA-DEMO-001","beverageType":"distilled_spirits","brandName":"OLD TOM DISTILLERY","classType":"Kentucky Straight Bourbon Whiskey","alcoholByVolume":45,"netContents":{"value":750,"unit":"mL"}}'
+curl.exe --silent --show-error --noproxy "*" --max-time 20 -F "application=$application" -F "image=@tests/fixtures/labels/demo-pass.png;type=image/png" "$labelGuardUrl/api/v1/verify"
+curl.exe --silent --show-error --noproxy "*" --max-time 20 -F "application=$application" -F "image=@tests/fixtures/labels/demo-brand-mismatch.png;type=image/png" "$labelGuardUrl/api/v1/verify"
+curl.exe --silent --show-error --noproxy "*" --max-time 20 -F "application=$application" -F "image=@tests/fixtures/labels/demo-unreadable.png;type=image/png" "$labelGuardUrl/api/v1/verify"
+podman ps --filter name=labelguard-ai-local
 ```
 
 Expected evidence:
 
-- Start prints the container name; logs should show Uvicorn startup completed.
-- Internal health should return `{"status":"ok"}`.
-- Each Windows probe either returns HTTP `200` with `{"status":"ok"}` or records the remaining connection failure. Run both probes even if the first fails.
+- Tesseract reports version 5.x and lists `eng`.
+- `root_http=200` and the health response is `{"status":"ok"}`.
+- The three verification responses identify `ocrProvider` as `local-tesseract` and return overall statuses `pass`, `mismatch`, and `review` in that order.
+- `podman ps` shows `labelguard-ai-local` running.
 
-Return the complete output and leave the container running. Codex will use these results to continue container acceptance or isolate the remaining forwarding failure. No rebuild or replacement container is needed for this step.
+Return the complete output and leave the container running. Codex will use it to complete container acceptance and then verify the browser flow through `$labelGuardUrl`.
 
 ## OCI `HEALTHCHECK` warning
 
