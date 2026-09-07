@@ -2,7 +2,7 @@
 
 ## Current objective
 
-Source publication and all CI, including the latest documentation run, succeeded. Checkpoint the user-requested delegation hierarchy, then research a qualifying public host when capacity permits.
+Source publication and all CI succeeded; delegation hierarchy is committed in a9a29fa. Bounded hosting research is complete. Next: the Codex-owned local constrained-container feasibility test in HOSTING_RESEARCH.md, before requesting hosting approval.
 
 ## Current project gate
 
@@ -30,14 +30,14 @@ Verified at 2026-09-06 23:11 UTC. WSL IP 192.168.70.113 (refresh after reboot). 
 
 ## Current unfinished step
 
-CI is green on published HEAD 30efee5 (run 34085764694). No outstanding CI failure or implementation defect is recorded. Next substantive stage: research a qualifying no-billing HTTPS host, prepare a concrete deployment proposal, and obtain separate approval. Stopped before starting that stage because remaining weekly capacity is at the preservation threshold.
+CI is green on published HEAD 30efee5 (run 34085764694). No outstanding CI failure or implementation defect is recorded. Current official documentation disqualifies new Hugging Face Docker Spaces (paid plan required). Render Free is a conditional candidate, not a selected host: 0.1 CPU/512 MB feasibility and account-specific no-billing onboarding are unverified. No runtime/code changes were made during research. Checkpoint before local resource testing; full procedure and conditional deployment settings are in HOSTING_RESEARCH.md.
 
 ## Exact next actions
 
 1. Inspect git status --short and git log -3 --oneline to confirm this checkpoint, preserving any newer changes.
 2. Read USER_REQUIREMENTS for publication boundary; no manual terminal request is needed.
 3. If resuming after restart: inspect podman ps --all, refresh WSL route as documented in deployment.md, and start the existing verification container only if stopped.
-4. Check actual remaining usage before new work. When capacity permits, research hosting against USER_REQUIREMENTS and prepare a reviewable proposal. Latest published CI is already confirmed green in run 34085764694; do not repeat it absent a new push. Hosting still requires separate approval.
+4. Check actual remaining usage before new work. When capacity permits, run the isolated resource-limit feasibility stage in HOSTING_RESEARCH.md. Preserve existing containers; do not create an account or deploy. Latest published CI is already confirmed green in run 34085764694; do not repeat it absent a new push.
 5. Do not rerun completed local gates unless code/runtime evidence changed.
 
 ## Errors/blockers
@@ -50,4 +50,4 @@ Published origin/main is 30efee5; its CI passed. The user-requested CODEX_ORCHES
 
 ## Usage checkpoint
 
-2026-09-07 14:00 UTC: 87% remaining in 5-hour window, 10% weekly. Preservation mode governed by weekly capacity: finish the small status checkpoint locally and stop. Limits are shared account capacity, not exact task tokens. No reset credit consumed; user authorization is required to redeem one.
+2026-09-07, latest runtime query during hosting research: 57% remaining in the 5-hour window, 5% weekly. The user explicitly authorized limited further work despite the earlier preservation threshold; the bounded research stage is now checkpointed. Limits are shared account capacity, not convertible into guaranteed work hours or exact task tokens. No reset credit consumed; user authorization is required to redeem one.

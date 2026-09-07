@@ -37,7 +37,7 @@ The original failure occurred at application JSON/model validation, before OCR. 
 
 ## Ownership and remaining delivery
 
-Latest published checkpoint 30efee5 also passed [CI run 34085764694](https://github.com/evrimakgul/labelguard-ai/actions/runs/34085764694), confirmed 2026-09-07. Hosting research is next; execution is paused under the usage-preservation policy at 10% remaining weekly capacity. No manual terminal work is required.
+Latest published checkpoint 30efee5 also passed [CI run 34085764694](https://github.com/evrimakgul/labelguard-ai/actions/runs/34085764694), confirmed 2026-09-07. The user authorized a small additional research stage despite low capacity. [HOSTING_RESEARCH.md](HOSTING_RESEARCH.md) rejects Hugging Face Docker Spaces under current paid-plan requirements and identifies Render Free as conditional on no-billing onboarding and local resource feasibility. No host is selected or deployed. Next Codex work is a separate constrained-container test, not manual user commands. Research is checkpointed with 5% weekly capacity remaining at the latest check.
 
 Codex owns all accessible tests, runtime operations, browser checks, benchmarks, repository inspection and documentation. USER_REQUIREMENTS contains only genuine human dependencies.
 

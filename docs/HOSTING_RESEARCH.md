@@ -1,0 +1,36 @@
+# Public hosting assessment
+
+Checked against official documentation on 2026-09-07. Research only: no account created, host selected, resource provisioned, or deployment performed. Existing local and CI acceptance remain valid; P2 stays deferred.
+
+## Findings
+
+**Hugging Face Docker Spaces: rejected.** Current documentation requires a paid plan to create Docker Spaces, even though CPU Basic has no hourly charge. Older free-compute guides are insufficient evidence. Static hosting cannot run the existing FastAPI/Tesseract service. [Spaces overview](https://huggingface.co/docs/hub/spaces-overview)
+
+**Render Free web service: conditional candidate, not approved.** Render documents free service creation and operation without a payment method, including suspension rather than supplementary billing when no payment method is present. This supports further evaluation, not a guarantee of account-specific onboarding eligibility. If registration or service creation requires billing details, a card, credits, or a paid plan, stop and reject this path; do not provide them. Do not use a workspace with an existing payment method. [Free deployment](https://render.com/docs/your-first-deploy), [billing FAQ](https://render.com/docs/faq)
+
+Render supports Docker web services and a public onrender.com address with managed TLS. Building the existing repository-root Dockerfile would keep the static frontend and local Tesseract API together, without a database, external OCR service, registry account, or app secret. This is an architectural fit inferred from the repository and platform documentation, not a tested deployment. [Web services](https://render.com/docs/web-services), [Docker support](https://render.com/docs/docker)
+
+## Remaining technical risks
+
+- Free compute is 0.1 CPU and 512 MB RAM. Our unrestricted local benchmark does not establish performance or memory safety at those limits. [Compute plans](https://render.com/docs/compute-plans)
+- Idle services sleep after 15 minutes; restarting takes about a minute. Document cold starts separately from the warm approximately five-second target. Do not add artificial keep-alive traffic or promise continuous availability.
+- Free service hours, bandwidth and build allowances are limited; services/builds can be suspended. Filesystem state is ephemeral, which fits transient image processing. Render explicitly does not recommend free instances for production applications; this proposal is for the assessment prototype only. [Free-tier limitations](https://render.com/docs/free)
+- Free services have no SSH/dashboard shell. Public OCR verification must use the existing real-HTTP verifier and deployment logs, not promise a remote `podman exec` equivalent. Keep local container Tesseract/version evidence distinct from hosted functional evidence. [Shell availability](https://render.com/docs/ssh)
+
+## Codex-owned next stage: local feasibility
+
+1. Refresh Podman/WSL access and identify the already verified image. Preserve both existing containers.
+2. Run a separately named disposable container from that image with a 512 MB memory limit, no additional swap, and 0.1 CPU quota. Inspect its effective limits; unsupported rootless resource controls invalidate the simulation.
+3. Run `scripts/verify_container.py` against it, including all seven cases and the 20-request benchmark; inspect container exit/OOM state and memory usage. Do not weaken assertions or timeouts to make this pass.
+4. Record measured timings and memory failures. This is a local feasibility screen, not a prediction of Render hardware performance. Stop/remove only the disposable test container afterward.
+5. If feasible, present the concrete deployment approval request below. If infeasible, investigate optimization or another qualifying host without switching to paid compute or changing product scope.
+
+## Conditional deployment proposal: requires separate approval
+
+Only after local feasibility: request approval to use/create one necessary Render account and deploy one **Free** Docker web service from the existing GitHub repository. No account action is required now. Codex performs accessible setup; the user handles only unavoidable sign-in/authorization challenges, without sharing credentials.
+
+Proposed settings: repository-root build context and Dockerfile, reviewed `main` revision, `OCR_PROVIDER=tesseract`, `PORT=8000`, health path `/api/health`, existing Docker start command, same-origin frontend/API. Do not set `TESSERACT_CMD` to a Windows path or a localhost frontend API override. No disk, database, custom domain, paid build tier or other add-on. Disable automatic deployment initially so publication does not implicitly deploy later changes. Recheck the actual Free selection and no-billing path before creating the service.
+
+Keep Dockerfile HEALTHCHECK for engines that support it; the host HTTP health probe is the deployment gate. OCI ignoring Docker health metadata is not itself an application failure and does not justify changing image format for this candidate.
+
+After an approved deployment, Codex verifies public HTTPS/no-login access, live OCR fixture/error flows, desktop/mobile browser behavior, warm timings and a separate cold-start observation. Update README with the real URL and measured limitations, inspect CI for any source/config changes, then review both Treasury deliverables. No final submission readiness claim until these checks pass.
