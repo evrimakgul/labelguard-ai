@@ -6,7 +6,7 @@ Finish the instruction/orchestration refactor and local container acceptance mil
 
 ## Current project gate
 
-Local/container acceptance complete. Remote publication and public deployment require explicit user authorization; P2 deferred.
+Local/container acceptance complete. User authorized source publication and CI verification; main was pushed through 84c6a75. CI run 34085101966 is in progress. Public deployment still requires separate approval; P2 deferred.
 
 ## Important decisions
 
@@ -30,14 +30,14 @@ Verified at 2026-09-06 23:11 UTC. WSL IP 192.168.70.113 (refresh after reboot). 
 
 ## Current unfinished step
 
-Local acceptance is verified and its final checkpoint is being committed with this file. Next major work is authorized publication/remote CI and selection of a qualifying public host.
+Await CI run 34085101966 for 84c6a75. Backend and frontend passed; container build/live OCR job remains in progress. If it fails, inspect logs and fix within the authorized publication workflow. Then checkpoint the publication evidence and proceed to host research.
 
 ## Exact next actions
 
 1. Inspect git status --short and git log -3 --oneline to confirm this checkpoint, preserving any newer changes.
 2. Read USER_REQUIREMENTS for publication boundary; no manual terminal request is needed.
 3. If resuming after restart: inspect podman ps --all, refresh WSL route as documented in deployment.md, and start the existing verification container only if stopped.
-4. After explicit push authorization, publish reviewed main to the existing remote and inspect CI. Research/approve a no-billing HTTPS host before deployment.
+4. Inspect CI with gh run view 34085101966 --repo evrimakgul/labelguard-ai. Push authorization was granted; do not request it again for this publication workflow. Research/approve a no-billing HTTPS host before deployment.
 5. Do not rerun completed local gates unless code/runtime evidence changed.
 
 ## Errors/blockers
@@ -46,8 +46,8 @@ invalid_application is resolved operationally through JSON-file/structured reque
 
 ## Git checkpoint
 
-Instruction refactor is committed as 3c7de65 (recovered base 25e09e9). Acceptance work and this checkpoint are committed together; obtain that commit's hash from git log. Expected handoff tree: clean. Remote main read-only check returned 54b86006f8e07f7cc3e59dc38c6cfdb654f09bf1. No push performed.
+Instruction refactor 3c7de65 and acceptance 84c6a75 are pushed to origin/main (authorized 2026-09-07). Publication-status documentation is being updated locally. No hosting/deployment performed.
 
 ## Usage checkpoint
 
-2026-09-07 04:55 UTC: 94% remaining in 5-hour window, 27% weekly. Bounded-stage mode; finish the local checkpoint and stop at the completed gate. Limits are shared account capacity, not exact task tokens. No reset credit consumed.
+2026-09-07 ~04:59 UTC: 69% remaining in 5-hour window, 23% weekly. Finish this bounded publication/CI stage and checkpoint; no large new workstream. Limits are shared account capacity, not exact task tokens. No reset credit consumed.

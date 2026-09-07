@@ -41,7 +41,7 @@ if ($LASTEXITCODE -ne 0) { throw 'WSL route lookup failed' }
 $machineIp = [regex]::Match(($machineRoute -join ' '), '\bsrc\s+(\d{1,3}(?:\.\d{1,3}){3})\b').Groups[1].Value
 if (-not $machineIp) { throw 'No machine IPv4 found' }
 $labelGuardUrl = 'http://{0}:8001' -f $machineIp
-curl.exe --fail --retry 10 --retry-connrefused --retry-delay 2 --max-time 5 --noproxy "*" "$labelGuardUrl/api/health"
+curl.exe --fail --retry 10 --retry-all-errors --retry-delay 2 --retry-max-time 60 --max-time 5 --noproxy "*" "$labelGuardUrl/api/health"
 if ($LASTEXITCODE -ne 0) { throw 'Application not ready' }
 podman exec labelguard-ai-verified tesseract --version
 podman exec labelguard-ai-verified tesseract --list-langs
