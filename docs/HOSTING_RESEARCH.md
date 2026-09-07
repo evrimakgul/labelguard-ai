@@ -17,7 +17,17 @@ Render supports Docker web services and a public onrender.com address with manag
 - Free service hours, bandwidth and build allowances are limited; services/builds can be suspended. Filesystem state is ephemeral, which fits transient image processing. Render explicitly does not recommend free instances for production applications; this proposal is for the assessment prototype only. [Free-tier limitations](https://render.com/docs/free)
 - Free services have no SSH/dashboard shell. Public OCR verification must use the existing real-HTTP verifier and deployment logs, not promise a remote `podman exec` equivalent. Keep local container Tesseract/version evidence distinct from hosted functional evidence. [Shell availability](https://render.com/docs/ssh)
 
-## Codex-owned next stage: local feasibility
+## Local feasibility result: failed at default settings
+
+On 2026-09-07, Codex tested verified image `4c2d0173a860192822bf39fe348225ad40265773a1c272a6905a3e5acaa603ae` in isolated container `labelguard-ai-resource-check`, published at VM port 8002. Effective cgroup values were `cpu.max=10000 100000`, `memory.max=536870912`, and `memory.swap.max=0`: the intended limits were enforced.
+
+Readiness succeeded after a bounded startup retry. The unchanged verifier (`--requests 20`) stopped on its **first label**, returning HTTP 503; therefore the seven-case suite and 20-request benchmark did **not** complete. Logs reported `Local OCR timed out.` A separate demo-pass multipart request confirmed safe `ocr_unavailable`, HTTP 503, in 12.861948 seconds total. The configured OCR timeout remained 8 seconds; total request time includes other processing and scheduling.
+
+Peak cgroup memory was 220,921,856 bytes (about 210.7 MiB), with zero OOM/OOM-kill events. Final CPU counters recorded 526 throttled periods out of 682 and 40,349,603 throttled microseconds. The container remained running, not OOM-killed. This indicates CPU pressure rather than an observed memory failure; it does not prove that every allowed upload fits the memory limit. The disposable container was stopped and removed; both existing containers were preserved.
+
+**Decision:** do not approve deployment on this evidence. Local strict-quota performance is not equivalent to Render scheduling, but the default application failed this feasibility screen. No timeout/assertion was relaxed, and no application code changed. Next Codex stage is a small CPU-efficiency investigation (including thread oversubscription) or another qualifying-host assessment. Any optimization must retain all existing correctness checks and rerun the complete constrained suite before claiming success. No user account or deployment action is needed yet.
+
+## Reproduction procedure (Codex-owned)
 
 1. Refresh Podman/WSL access and identify the already verified image. Preserve both existing containers.
 2. Run a separately named disposable container from that image with a 512 MB memory limit, no additional swap, and 0.1 CPU quota. Inspect its effective limits; unsupported rootless resource controls invalidate the simulation.

@@ -31,13 +31,17 @@ Codex directly accessed the repository, native Tesseract, Podman, WSL2 and GitHu
 - Initial hosted CI passed backend/frontend and image build, but its first health probe reset during startup (run 34085101966). Commit 3369a0c extends the bounded readiness retry to include resets; the real OCR assertions are unchanged. [Replacement run 34085317594](https://github.com/evrimakgul/labelguard-ai/actions/runs/34085317594) passed backend, frontend and container jobs, including live OCR acceptance.
 - Treasury source SHA256 remains AB10D3076C1421514C9B3FDC1970ABE2A068F3582F195CDC62B60675FD007E6A.
 
+## Constrained-host feasibility
+
+2026-09-07: the verified image failed the isolated 0.1 CPU/512 MB/no-swap screen at its first label: HTTP 503, logged OCR timeout. Repeat demo-pass failed safely in 12.86 seconds. Peak memory was 210.7 MiB, no OOM events, with substantial CPU throttling. The full constrained benchmark was not completed. This does not invalidate unrestricted local/CI acceptance, but blocks approving this candidate on current evidence. See HOSTING_RESEARCH for counters and next steps. Temporary container removed; existing containers preserved. No code or timeout changes, push, account creation, or deployment.
+
 ## invalid_application resolution
 
 The original failure occurred at application JSON/model validation, before OCR. Exact historical request bytes are unavailable. File-based JSON and structured HTTP submissions pass, and a fresh valid inline-JSON shell request also passed: shell quoting or transcript escaping is plausible, not a proven unique cause. The reproducible fix is tests/fixtures/demo-application.json and scripts/verify_container.py. Server validation was not weakened.
 
 ## Ownership and remaining delivery
 
-Latest published checkpoint 30efee5 also passed [CI run 34085764694](https://github.com/evrimakgul/labelguard-ai/actions/runs/34085764694), confirmed 2026-09-07. The user authorized a small additional research stage despite low capacity. [HOSTING_RESEARCH.md](HOSTING_RESEARCH.md) rejects Hugging Face Docker Spaces under current paid-plan requirements and identifies Render Free as conditional on no-billing onboarding and local resource feasibility. No host is selected or deployed. Next Codex work is a separate constrained-container test, not manual user commands. Research is checkpointed with 5% weekly capacity remaining at the latest check.
+Latest published checkpoint 30efee5 also passed [CI run 34085764694](https://github.com/evrimakgul/labelguard-ai/actions/runs/34085764694), confirmed 2026-09-07. The user authorized bounded research and resource testing despite low capacity. [HOSTING_RESEARCH.md](HOSTING_RESEARCH.md) rejects paid-plan Docker Spaces and records the failed Render-like resource screen. No host is selected or deployed. Next Codex work is CPU-efficiency investigation or another qualifying-host assessment, not manual user commands.
 
 Codex owns all accessible tests, runtime operations, browser checks, benchmarks, repository inspection and documentation. USER_REQUIREMENTS contains only genuine human dependencies.
 

@@ -2,7 +2,7 @@
 
 ## Current objective
 
-Source publication and all CI succeeded; delegation hierarchy is committed in a9a29fa. Bounded hosting research is complete. Next: the Codex-owned local constrained-container feasibility test in HOSTING_RESEARCH.md, before requesting hosting approval.
+Source publication and all CI succeeded; delegation hierarchy is committed in a9a29fa. Hosting research and the initial constrained-container screen are complete. The default image failed at 0.1 CPU with an OCR timeout. Next: bounded CPU-efficiency investigation or another qualifying host, before requesting hosting approval.
 
 ## Current project gate
 
@@ -30,14 +30,14 @@ Verified at 2026-09-06 23:11 UTC. WSL IP 192.168.70.113 (refresh after reboot). 
 
 ## Current unfinished step
 
-CI is green on published HEAD 30efee5 (run 34085764694). No outstanding CI failure or implementation defect is recorded. Current official documentation disqualifies new Hugging Face Docker Spaces (paid plan required). Render Free is a conditional candidate, not a selected host: 0.1 CPU/512 MB feasibility and account-specific no-billing onboarding are unverified. No runtime/code changes were made during research. Checkpoint before local resource testing; full procedure and conditional deployment settings are in HOSTING_RESEARCH.md.
+CI is green on published HEAD 30efee5 (run 34085764694). Render-like strict 0.1 CPU/512 MB limits caused the first fixture to time out (HTTP 503); repeat failed in 12.86 seconds. Memory peaked at 210.7 MiB with no OOM; CPU throttling confirmed. All-case/20-request constrained benchmark remains incomplete, not passed. No code/assertion/timeout changes. Temporary resource-check container removed; original and verified containers remain running. Full evidence is in HOSTING_RESEARCH.md. Investigate CPU efficiency (thread oversubscription is only a hypothesis) or another host; do not approve deployment yet.
 
 ## Exact next actions
 
 1. Inspect git status --short and git log -3 --oneline to confirm this checkpoint, preserving any newer changes.
 2. Read USER_REQUIREMENTS for publication boundary; no manual terminal request is needed.
 3. If resuming after restart: inspect podman ps --all, refresh WSL route as documented in deployment.md, and start the existing verification container only if stopped.
-4. Check actual remaining usage before new work. When capacity permits, run the isolated resource-limit feasibility stage in HOSTING_RESEARCH.md. Preserve existing containers; do not create an account or deploy. Latest published CI is already confirmed green in run 34085764694; do not repeat it absent a new push.
+4. Check actual remaining usage before new work. When capacity permits, investigate the constrained OCR timeout; consider a controlled thread-limit experiment without weakening the 8-second OCR timeout or verifier. Preserve existing containers; do not create an account or deploy. Latest published CI is already confirmed green in run 34085764694; do not repeat it absent a new push.
 5. Do not rerun completed local gates unless code/runtime evidence changed.
 
 ## Errors/blockers
