@@ -8,4 +8,5 @@
 **/.pytest_cache
 **/coverage
 docs/screenshots
-
+.playwright-mcp
+output

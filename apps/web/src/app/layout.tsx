@@ -6,6 +6,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "LabelGuard AI | Alcohol Label Verification",
   description: "Decision support for comparing alcohol label artwork with application data.",
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
@@ -15,4 +16,3 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     </html>
   );
 }
-

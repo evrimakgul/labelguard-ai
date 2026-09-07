@@ -1,36 +1,28 @@
-# LabelGuard AI Implementation Plan
+# LabelGuard AI implementation plan
 
-## P0/P1 implementation — committed
+## Completed implementation
 
-- P0 single-label verification is committed as `d9dd867`.
-- P1 preprocessing, evidence, timing, demo loading, and regression fixtures are committed as `37c66f9`.
-- Local Tesseract is the default OCR provider; fixture-only demo OCR remains for deterministic tests.
-- The OCI image includes Tesseract and English data, but the image has not yet been built locally.
-- `TREASURY_ASSIGNMENT.md` remains unchanged historical/source material.
+P0 core and P1 work are committed as d9dd867 and 37c66f9. Local Tesseract correction followed in b5bfb61. Preserve that implementation. Detailed requirements live in SPEC; acceptance evidence lives in PROJECT_STATUS.
 
-The deterministic and browser/demo gates are green in commits `d9dd867` and `37c66f9`. The 2026-09-04 live Tesseract defect has been corrected and all seven live OCR fixture cases pass.
+## Current stage
 
-P0 and P1 are stable locally. Do not add P2 scope while container and delivery acceptance remain.
+Local container/browser acceptance and repository review pass; the lightweight instruction/orchestration refactor is integrated. The current gate is explicit authorization to publish the reviewed source, followed by remote CI and qualifying public deployment. CODEX_STATE records the exact continuation.
 
-## Live OCR remediation — complete
+## Remaining delivery sequence
 
-- Sparse-text segmentation preserves the isolated brand heading.
-- Producer statements are excluded from brand fallback, while brand-keyword mismatches remain detectable.
-- Sparse unreadable OCR produces Needs Review rather than Mismatch.
-- Deterministic regressions, seven opt-in live cases, and a 20-request live benchmark pass.
+1. Local/container evidence, README/run instructions and source/secrets review are complete; retain that evidence unless changes require revalidation.
+2. Prepare reviewed source publication; obtain explicit user authorization before pushing.
+3. Verify remote CI after the authorized push. Its container job builds and exercises live OCR without secrets.
+4. Research a host meeting the no-cost/no-billing criteria; obtain approval for that specific deployment.
+5. Deploy, verify public HTTPS with no login, fresh-browser pass/error/mobile flows, and production timings.
+6. Add source/public URLs and final limitations to README; confirm both Treasury deliverables are accessible.
 
-## Current gate: end-to-end container verification — User then Codex
+Local and container gates do not themselves authorize publication. Public delivery remains unfinished until an evaluator can access the source and working application.
 
-- Image build, container startup, internal health, and direct machine-address health are confirmed. The user runs the end-to-end verification block in `USER_REQUIREMENTS.md` and returns its complete output.
-- Codex verifies bundled Tesseract, pass/mismatch/review/error browser flows, logs, mobile layout, and live timings through the direct machine address.
+## Deferred scope
 
-## Deferred
+P2 batch, CSV, filtering, advanced corrections, and expanded beverage rules remain deferred. Do not start optional work to fill time while awaiting delivery approval.
 
-P2 batch upload, CSV import/export, filtering, and expanded beverage rules remain deferred. They are not required to resolve the live OCR gate or submit the core Treasury prototype.
+## Constraints
 
-## Delivery constraints
-
-- No paid OCR, cloud subscription, billing information, payment method, or prepaid credits.
-- Do not select a public host until it satisfies the no-cost criteria in `USER_REQUIREMENTS.md`.
-- Temporary gate: do not push, deploy, or provision external resources until live OCR and container acceptance pass.
-- Final delivery: after those gates pass and the user authorizes it, push the reviewed commits, verify CI, select only a qualifying no-cost host, deploy, and verify the public HTTPS URL.
+No paid OCR/cloud service, billing, payment method, credits, or paid subscription. No secrets in Git. No cloud provisioning, account creation, push or deployment without the appropriate stage and explicit authorization. Treasury source remains unchanged.

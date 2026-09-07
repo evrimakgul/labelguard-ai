@@ -1,0 +1,8 @@
+{
+  "applicationId": "COLA-DEMO-001",
+  "beverageType": "distilled_spirits",
+  "brandName": "OLD TOM DISTILLERY",
+  "classType": "Kentucky Straight Bourbon Whiskey",
+  "alcoholByVolume": 45,
+  "netContents": { "value": 750, "unit": "mL" }
+}

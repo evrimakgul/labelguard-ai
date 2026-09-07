@@ -30,11 +30,11 @@ Verified at 2026-09-06 23:11 UTC. WSL IP 192.168.70.113 (refresh after reboot). 
 
 ## Current unfinished step
 
-Complete local milestone commits. No remaining application acceptance failure. Next major work is authorized publication/remote CI and selection of a qualifying public host.
+Local acceptance is verified and its final checkpoint is being committed with this file. Next major work is authorized publication/remote CI and selection of a qualifying public host.
 
 ## Exact next actions
 
-1. Inspect git status --short and git log -3 --oneline; finish any named pending checkpoint commit, preserving changes.
+1. Inspect git status --short and git log -3 --oneline to confirm this checkpoint, preserving any newer changes.
 2. Read USER_REQUIREMENTS for publication boundary; no manual terminal request is needed.
 3. If resuming after restart: inspect podman ps --all, refresh WSL route as documented in deployment.md, and start the existing verification container only if stopped.
 4. After explicit push authorization, publish reviewed main to the existing remote and inspect CI. Research/approve a no-billing HTTPS host before deployment.
@@ -46,8 +46,8 @@ invalid_application is resolved operationally through JSON-file/structured reque
 
 ## Git checkpoint
 
-Recovered base 25e09e9; remote main read-only check returned 54b86006f8e07f7cc3e59dc38c6cfdb654f09bf1. Instruction and acceptance commits are being created locally; this file's containing commit plus git log identify the final checkpoint without self-referential hashes. No push performed.
+Instruction refactor is committed as 3c7de65 (recovered base 25e09e9). Acceptance work and this checkpoint are committed together; obtain that commit's hash from git log. Expected handoff tree: clean. Remote main read-only check returned 54b86006f8e07f7cc3e59dc38c6cfdb654f09bf1. No push performed.
 
 ## Usage checkpoint
 
-2026-09-06 ~23:12 UTC: 30% remaining in 5-hour window, 32% weekly. Bounded-stage mode; complete commits and stop at the finished gate, preserving reserve. Limits are shared account capacity, not exact task tokens. No reset credit consumed.
+2026-09-07 04:55 UTC: 94% remaining in 5-hour window, 27% weekly. Bounded-stage mode; finish the local checkpoint and stop at the completed gate. Limits are shared account capacity, not exact task tokens. No reset credit consumed.

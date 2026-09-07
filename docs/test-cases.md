@@ -41,4 +41,4 @@
 7. Check desktop and mobile layouts with keyboard-only navigation.
 8. With Tesseract installed, run `$env:RUN_LIVE_OCR='1'; .\.venv\Scripts\pytest apps\api\tests\test_live_tesseract.py; Remove-Item Env:RUN_LIVE_OCR`.
 
-Current live result on 2026-09-04: **passed**. All seven cases returned their expected Pass, Mismatch, or Needs Review outcome with the real local Tesseract provider. Container acceptance remains separate and pending.
+Current result on 2026-09-06: **passed**. All seven cases also passed against the final Linux container. Desktop/mobile browser verification covered pass, brand mismatch, unreadable, invalid-image error and recovery, clickable evidence, timings, and zero horizontal overflow. The final fresh-page console had zero errors/warnings. See PROJECT_STATUS for runtime identifiers and measurements; run `scripts/verify_container.py --base-url <url>` with the project Python environment to reproduce API acceptance and benchmarking.

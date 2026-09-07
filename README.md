@@ -8,7 +8,7 @@ The application runs locally without a paid service. The OCI image, container pr
 
 ## Current Status
 
-P0/P1 implementation, deterministic gates, and live Windows Tesseract acceptance are complete. Direct container access is healthy; end-to-end container verification is the current gate. Push and deployment follow afterward. See [project status](docs/PROJECT_STATUS.md) and [user requirements](docs/USER_REQUIREMENTS.md).
+P0/P1 core implementation and local/container acceptance pass. The verified local application is currently at `http://192.168.70.113:8001` (the machine IP can change). Public source publication, remote CI and public deployment await authorization. See [project status](docs/PROJECT_STATUS.md), [deployment procedures](docs/deployment.md), and [user decisions](docs/USER_REQUIREMENTS.md).
 
 ## Problem
 
@@ -20,7 +20,7 @@ The application provides one obvious workflow: enter expected values, upload a J
 
 LabelGuard AI does not approve or reject a COLA application. It preserves human judgment for uncertain and image-dependent requirements.
 
-![LabelGuard AI single-label workflow](docs/screenshots/labelguard-home.png)
+![LabelGuard AI real container verification](docs/screenshots/container-desktop.png)
 
 ## Features
 
@@ -102,7 +102,7 @@ Copy `.env.example` to `.env` and set:
 - `OCR_TIMEOUT_SECONDS` (defaults to 8)
 - `NEXT_PUBLIC_API_URL=http://localhost:8000` for split local development
 
-No OCR credentials are needed. Do not commit local machine-specific configuration.
+No OCR credentials are needed. Do not commit local machine-specific configuration. The backend does not automatically load `.env`; the commands below set environment variables explicitly. To load the repository-root `.env` instead, add `--env-file .env` to the root-level uvicorn command. Next.js reads configuration in its own application directory.
 
 ## Run Locally
 
@@ -147,7 +147,7 @@ podman build --tag labelguard-ai:local .
 podman run --rm --publish 8000:8000 labelguard-ai:local
 ```
 
-The image installs Tesseract and English language data. No host OCR installation, credentials, or paid service is required. The image build passed; runtime container acceptance is pending the staged diagnosis in [user requirements](docs/USER_REQUIREMENTS.md).
+The image installs Tesseract and English language data. No host OCR installation, credentials, or paid service is required. Final image build, real OCR API cases, desktop/mobile browser flows and error recovery pass. Reproduce acceptance with `.venv/Scripts/python scripts/verify_container.py --base-url <running-container-url>`; see [deployment procedures](docs/deployment.md) for current container names, ports, and Windows networking.
 
 ## Deployment
 
@@ -166,6 +166,8 @@ See [portable deployment guidance](docs/deployment.md). No external resources ar
 The response reports image-preparation, OCR, extraction, verification, and total timings. On this Windows development host, 20 fixture-mode requests measured a 136.2 ms wall median and 169.0 ms p95 (131.5 ms/164.0 ms API-reported). Run `.venv/Scripts/python scripts/benchmark_demo.py` to reproduce it.
 
 After live OCR correction, 20 production-mode requests on the same host measured a 682.8 ms wall median and 737.6 ms p95 (679.0 ms/734.0 ms API-reported; 546.5 ms/565.0 ms OCR stage). Run `.venv/Scripts/python scripts/benchmark_live_ocr.py` to reproduce it. These host-specific fixture measurements are evidence for the warm target, not a guarantee for arbitrary artwork or deployment hardware.
+
+Final Linux container benchmark (2026-09-06): 20 sequential pass-fixture requests after warmup, wall median **648.9 ms**, nearest-rank p95 **694.6 ms**; API median/p95 645.0/691 ms and OCR 528.0/557 ms. This measures the local WSL container, not public-host latency or varied real-world artwork. The container verifier reports every expected case and rejects unexpected results.
 
 ## Test Data
 
