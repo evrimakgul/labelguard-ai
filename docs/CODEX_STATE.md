@@ -2,11 +2,11 @@
 
 ## Current objective
 
-Finish the instruction/orchestration refactor and local container acceptance milestone; then prepare authorized Treasury publication/deployment.
+Source publication and code/workflow CI succeeded; preserve the final status checkpoint, then research a qualifying public host in the next stage.
 
 ## Current project gate
 
-Local/container acceptance complete. User authorized source publication and CI verification; main was pushed through 84c6a75. CI run 34085101966 is in progress. Public deployment still requires separate approval; P2 deferred.
+Local/container acceptance, authorized source publication and remote CI complete. Main was pushed through readiness fix 3369a0c; CI run 34085317594 passed all three jobs. Public deployment still requires separate approval; P2 deferred.
 
 ## Important decisions
 
@@ -22,7 +22,7 @@ AGENTS; CODEX_ORCHESTRATION/STATE; SPEC/architecture/assumptions; README/status/
 
 ## Verification completed
 
-42 backend tests (35 deterministic + 7 native OCR), Ruff lint/format and dependency consistency pass; frontend lint/types/6 tests/build pass. Final container production build passes. All seven live label cases and 400/422 errors pass. Final 20-request container wall median/p95 648.9/694.6 ms; API 645.0/691 ms; OCR 528.0/557 ms. Final desktop/mobile pass/mismatch/review, invalid-image recovery, evidence click/keyboard, timings, caption colors, no overflow and fresh-page console pass. Screenshots refreshed. CI YAML parses; remote CI not yet run. Treasury file hash unchanged; targeted secret/paid-platform scan clean outside Treasury history.
+42 backend tests (35 deterministic + 7 native OCR), Ruff lint/format and dependency consistency pass; frontend lint/types/6 tests/build pass. Final container production build passes. All seven live label cases and 400/422 errors pass. Final 20-request container wall median/p95 648.9/694.6 ms; API 645.0/691 ms; OCR 528.0/557 ms. Final desktop/mobile pass/mismatch/review, invalid-image recovery, evidence click/keyboard, timings, caption colors, no overflow and fresh-page console pass. Screenshots refreshed. CI YAML parses; remote backend/frontend/container checks passed in run 34085317594. Treasury file hash unchanged; targeted secret/paid-platform scan clean outside Treasury history.
 
 ## Runtime/environment state
 
@@ -30,24 +30,24 @@ Verified at 2026-09-06 23:11 UTC. WSL IP 192.168.70.113 (refresh after reboot). 
 
 ## Current unfinished step
 
-Await CI run 34085101966 for 84c6a75. Backend and frontend passed; container build/live OCR job remains in progress. If it fails, inspect logs and fix within the authorized publication workflow. Then checkpoint the publication evidence and proceed to host research.
+Code/workflow CI is green on 3369a0c (run 34085317594). Publish this documentation checkpoint and preserve immediately. Code/workflow CI passed; the following documentation-only push may trigger a new run that must be inspected on resume. Next stage: research a qualifying no-billing HTTPS host, prepare a concrete deployment proposal, and obtain separate approval.
 
 ## Exact next actions
 
 1. Inspect git status --short and git log -3 --oneline to confirm this checkpoint, preserving any newer changes.
 2. Read USER_REQUIREMENTS for publication boundary; no manual terminal request is needed.
 3. If resuming after restart: inspect podman ps --all, refresh WSL route as documented in deployment.md, and start the existing verification container only if stopped.
-4. Inspect CI with gh run view 34085101966 --repo evrimakgul/labelguard-ai. Push authorization was granted; do not request it again for this publication workflow. Research/approve a no-billing HTTPS host before deployment.
+4. Use gh run list --repo evrimakgul/labelguard-ai --branch main --limit 3 to inspect the newest documentation checkpoint if necessary. Source/workflow CI already passed in run 34085317594. Push authorization was granted for this workflow; hosting still requires separate approval.
 5. Do not rerun completed local gates unless code/runtime evidence changed.
 
 ## Errors/blockers
 
-invalid_application is resolved operationally through JSON-file/structured requests; exact historical malformed payload unavailable. Valid inline JSON also succeeds. Windows localhost forwarding remains unavailable; direct-IP access works. No cloud/public URL exists. Publication/deployment approval is the next external dependency.
+invalid_application is resolved operationally through JSON-file/structured requests; exact historical malformed payload unavailable. Windows localhost forwarding remains unavailable; direct-IP access works. CI startup reset is resolved by bounded retry-all-errors (3369a0c). No cloud/public URL exists. Qualifying host selection and deployment approval remain.
 
 ## Git checkpoint
 
-Instruction refactor 3c7de65 and acceptance 84c6a75 are pushed to origin/main (authorized 2026-09-07). Publication-status documentation is being updated locally. No hosting/deployment performed.
+Instruction refactor 3c7de65, acceptance 84c6a75 and CI fix 3369a0c are pushed to origin/main (authorized 2026-09-07). This publication-status documentation is a following checkpoint; use git log for its hash. No hosting/deployment performed.
 
 ## Usage checkpoint
 
-2026-09-07 ~04:59 UTC: 69% remaining in 5-hour window, 23% weekly. Finish this bounded publication/CI stage and checkpoint; no large new workstream. Limits are shared account capacity, not exact task tokens. No reset credit consumed.
+2026-09-07 ~05:08 UTC: 12% remaining in 5-hour window, 14% weekly. Preservation mode: save/publish this checkpoint and stop; inspect the documentation-only run on resume. Limits are shared account capacity, not exact task tokens. No reset credit consumed.

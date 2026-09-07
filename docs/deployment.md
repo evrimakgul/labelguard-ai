@@ -66,4 +66,4 @@ Podman OCI builds warn that Dockerfile HEALTHCHECK metadata is ignored. Keep the
 
 ## Public delivery
 
-No hosting provider is selected or authorized. Require HTTPS without login, no billing/payment method, no credits/subscription, and sufficient resources for local OCR. After explicit approval, verify deployment from a fresh browser and record URLs, timings, cold-start behavior, and limitations. README setup must work from a clean clone. CI configuration is locally validated; remote execution awaits an authorized source push.
+No hosting provider is selected or authorized. Require HTTPS without login, no billing/payment method, no credits/subscription, and sufficient resources for local OCR. After explicit approval, verify deployment from a fresh browser and record URLs, timings, cold-start behavior, and limitations. Source publication was authorized; remote CI passed for 3369a0c in run 34085317594, including the built container and real OCR checks. Readiness retries include transient connection resets with a bounded retry count/time limit.

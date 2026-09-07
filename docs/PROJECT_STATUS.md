@@ -1,10 +1,10 @@
 # Project status
 
-Updated: 2026-09-06
+Updated: 2026-09-07
 
 ## Current gate
 
-Local implementation and container acceptance are complete for the supported core scope. Public-source publication, remote CI, host selection and public deployment remain pending authorization. P2 remains deferred. CODEX_STATE holds exact continuation, not this document.
+Local implementation, container acceptance, source publication and remote CI are complete for the supported core scope. Publication was authorized on 2026-09-07. Next: research a qualifying no-cost host, obtain separate deployment approval, and verify a public HTTPS application. P2 remains deferred. CODEX_STATE holds exact continuation, not this document.
 
 ## Verified runtime
 
@@ -28,7 +28,7 @@ Codex directly accessed the repository, native Tesseract, Podman, WSL2 and GitHu
 - Final fresh-page browser console: zero errors/warnings. The deliberate invalid-image test produces its expected HTTP 400 resource entry.
 - Fixed favicon 404 and preview filename/caption contrast; screenshots in screenshots/container-desktop.png and screenshots/container-mobile.png.
 - Final warm container benchmark: 20 sequential demo-pass requests after acceptance warmup; wall median 648.9 ms / nearest-rank p95 694.6 ms, API 645.0 / 691 ms, OCR 528.0 / 557 ms. Fixture/hardware-specific, not arbitrary-artwork or public-host guarantees.
-- CI YAML parses; workflow now loads/runs its image and performs real OCR smoke acceptance. Hosted execution is pending a push.
+- Initial hosted CI passed backend/frontend and image build, but its first health probe reset during startup (run 34085101966). Commit 3369a0c extends the bounded readiness retry to include resets; the real OCR assertions are unchanged. [Replacement run 34085317594](https://github.com/evrimakgul/labelguard-ai/actions/runs/34085317594) passed backend, frontend and container jobs, including live OCR acceptance.
 - Treasury source SHA256 remains AB10D3076C1421514C9B3FDC1970ABE2A068F3582F195CDC62B60675FD007E6A.
 
 ## invalid_application resolution
@@ -40,10 +40,10 @@ The original failure occurred at application JSON/model validation, before OCR. 
 Codex owns all accessible tests, runtime operations, browser checks, benchmarks, repository inspection and documentation. USER_REQUIREMENTS contains only genuine human dependencies.
 
 1. Final review and local checkpoint of this verified work.
-2. Obtain explicit permission to publish reviewed commits to the existing source remote.
-3. Push only when authorized; inspect remote CI and resolve any failure.
+2. Source publication authorized and completed; existing source remote updated.
+3. Remote CI verified successfully; inspect checks for subsequent source/workflow changes as needed.
 4. Research a host with public HTTPS, no billing/payment/credits/subscription, sufficient local OCR resources; obtain deployment/account approval.
 5. Deploy and verify public health, full workflow, errors, mobile layout and timings; update README URLs and limitations.
 6. Confirm evaluator-accessible source and public application before Treasury submission.
 
-No paid dependency or application secret is required. No push, deployment or external provisioning has been performed. Completing local acceptance does not authorize those actions.
+No paid dependency or application secret is required. Source was pushed with explicit authorization. No deployment or external provisioning has been performed; public deployment still requires separate approval.

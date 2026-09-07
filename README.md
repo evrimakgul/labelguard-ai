@@ -8,7 +8,7 @@ The application runs locally without a paid service. The OCI image, container pr
 
 ## Current Status
 
-P0/P1 core implementation and local/container acceptance pass. The verified local application is currently at `http://192.168.70.113:8001` (the machine IP can change). Public source publication, remote CI and public deployment await authorization. See [project status](docs/PROJECT_STATUS.md), [deployment procedures](docs/deployment.md), and [user decisions](docs/USER_REQUIREMENTS.md).
+P0/P1 core implementation, local/container acceptance, and [GitHub Actions](https://github.com/evrimakgul/labelguard-ai/actions/runs/34085317594) pass. [Source code](https://github.com/evrimakgul/labelguard-ai) is published following user authorization. The verified local application was at `http://192.168.70.113:8001` (refresh after restart). Public hosting and deployment still require a qualifying host and separate approval. See [project status](docs/PROJECT_STATUS.md), [deployment procedures](docs/deployment.md), and [user decisions](docs/USER_REQUIREMENTS.md).
 
 ## Problem
 

@@ -6,9 +6,9 @@ Only genuine human dependencies belong here. Codex owns routine terminal, contai
 
 None for local verification. Podman, WSL2, Tesseract, GitHub CLI, and the repository are accessible to Codex. The sandbox cannot access Podman's identity file, the WSL service, or the GitHub credential store; approved execution outside it succeeds. Any future sandbox approval is requested through the app, not by asking the user to copy commands.
 
-## Next external decision: source publication
+## Source publication authorized
 
-Local/container acceptance and repository review pass. The single next user decision is whether Codex may push the reviewed local main branch to the existing remote `https://github.com/evrimakgul/labelguard-ai.git` and inspect its GitHub Actions checks. No push is authorized yet; the user need not run any terminal command. This authorization would not include creating a host account, deploying, provisioning, or accepting costs.
+On 2026-09-07, the user authorized pushing the reviewed main branch to `https://github.com/evrimakgul/labelguard-ai.git` and verifying GitHub Actions. Source publication and CI verification succeeded, including the container startup-probe correction. No additional manual terminal action or repeat source-publication approval is required for this workflow. This does not authorize creating a host account, deploying, provisioning, or accepting costs.
 
 Public deployment additionally requires approval of an identified host that provides a public HTTPS URL without billing information, a payment method, prepaid credits, or a paid subscription, and can run local Tesseract. No host has been selected. Codex will research and present a concrete candidate before requesting a hosting decision; no new account is needed now.
 
