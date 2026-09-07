@@ -37,6 +37,8 @@ The original failure occurred at application JSON/model validation, before OCR. 
 
 ## Ownership and remaining delivery
 
+Latest published checkpoint 30efee5 also passed [CI run 34085764694](https://github.com/evrimakgul/labelguard-ai/actions/runs/34085764694), confirmed 2026-09-07. Hosting research is next; execution is paused under the usage-preservation policy at 10% remaining weekly capacity. No manual terminal work is required.
+
 Codex owns all accessible tests, runtime operations, browser checks, benchmarks, repository inspection and documentation. USER_REQUIREMENTS contains only genuine human dependencies.
 
 1. Final review and local checkpoint of this verified work.

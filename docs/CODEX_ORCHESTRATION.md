@@ -14,13 +14,22 @@ Do not delegate automatically. Delegate only a bounded independent task whose pa
 
 Each assignment includes one objective, allowed files/resources, concise necessary context, success criteria, required verification, write boundaries, and a compact return format (finding/change, evidence, unresolved issue). Prefer a fresh context rather than full history. Inspect the runtime's actual capabilities before selecting settings.
 
-## Dynamic intelligence selection
+## Model and reasoning hierarchy
 
-Estimate complexity, ambiguity, risk, context volume, verification difficulty, and failure/rework cost. Choose the lowest-capability available model and lowest supported reasoning effort likely to succeed reliably. Do not inherit the root's model automatically or maintain permanent model-to-task mappings. A stronger model once can cost less overall than repeated weak attempts.
+When explicit model/reasoning selection is available, use this hierarchy:
 
-Optimize expected total consumption: model + reasoning + context + orchestration + retry/rework. Correctness and constraints remain hard requirements. Explicitly select runtime-exposed model/effort controls when available; otherwise use available context/task controls and do not claim a selection that did not occur. Do not invent pricing or usage measurements.
+| Category | Model | Reasoning |
+| --- | --- | --- |
+| Orchestrator/root | Astra (`gpt-6-astra`) | High (`high`) |
+| Hard subtask | Astra (`gpt-6-astra`) | Low (`low`) |
+| Medium subtask | Luna (`gpt-5.6-luna`) | Extra High (`xhigh`) |
+| Low subtask | Luna (`gpt-5.6-luna`) | Low (`low`) |
 
-Review results before integration. Escalate only if evidence is inadequate, incorrect, ambiguous, or difficulty increased; narrow or stop repeatedly failing work. Reuse an existing agent for a follow-up when cheaper than recreating context. The root resolves conflicts, verifies integration, and owns the final answer.
+Choose the lowest category reasonably likely to succeed, considering complexity, ambiguity, risk, verification difficulty, and expected rework. Do not overprovision by default. If an implementer fails or is clearly insufficient, escalate one level and retry: Low -> Medium -> Hard -> root. At the root ceiling, reassess or report the blocker rather than inventing a higher level.
+
+Verification normally uses one level above the actual implementer: Medium verifies Low, Hard verifies Medium, and root verifies Hard. Escalate verification further only for ambiguity, incorrect results, high risk, or failed verification. The root reviews integration and owns the final result; Astra High should focus on orchestration, integration, and high-level decisions rather than routine implementation.
+
+Minimize context per subagent and reuse verified findings. Account for model, reasoning, context, coordination, and retry/rework costs together. If explicit child-model/reasoning controls are unavailable, record the limitation in the task checkpoint and use the closest available behavior. Root settings depend on session configuration; never claim a model/effort change the runtime did not perform.
 
 ## Parallel work and execution
 
