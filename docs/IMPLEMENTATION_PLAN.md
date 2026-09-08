@@ -7,9 +7,9 @@ P0/P1 implementation, local/live OCR corrections, deterministic tests, image val
 ## Final delivery stage
 
 1. Verify public HTTPS, seven OCR fixtures, safe errors, browser/mobile flows and public timings — complete.
-2. Reconcile README, deployment/status/limitations and evidence with actual Render state — current documentation change.
-3. Publish reviewed documentation and verify its CI. Do not change runtime/account settings merely to update documentation.
-4. Confirm both public URLs and record the final submission checklist. Stop; the user submits.
+2. Reconcile README, deployment/status/limitations and evidence with actual Render state — complete.
+3. Publish reviewed documentation and verify its CI — checkpoint 5a792ed / run 34188726208 passed. No runtime/account settings changed.
+4. Confirm both public URLs and record the final submission checklist — complete, with the documented prototype limitations. Stop; the user submits.
 
 PROJECT_STATUS owns verified evidence; SUBMISSION_READINESS owns the final checklist; CODEX_STATE owns the immediate continuation.
 

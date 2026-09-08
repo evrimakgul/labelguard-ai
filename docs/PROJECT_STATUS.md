@@ -4,7 +4,7 @@ Updated: 2026-09-08. This is current delivery status; historical sizing experime
 
 ## Delivery gate
 
-The user deployed Render Free at **https://labelguard-ai-4g5s.onrender.com**. Public core behavior is verified. Documentation publication and its CI are the final in-progress step; see SUBMISSION_READINESS for the delivery checklist. No further product implementation or P2 is required for the accepted prototype.
+The user deployed Render Free at **https://labelguard-ai-4g5s.onrender.com**. Public core behavior, documentation publication and checkpoint CI are verified. **Ready for Treasury prototype submission with disclosed hosting/performance/regulatory limitations**; see SUBMISSION_READINESS. No further product implementation or P2 is required for the accepted prototype.
 
 - Source: https://github.com/evrimakgul/labelguard-ai — verified public.
 - Deployed application commit: **919e241**, confirmed by the user and supplied Render deployment screenshot.
@@ -32,7 +32,7 @@ Twenty sequential warm pass requests after the seven-case warmup: wall median/p9
 
 Runtime source 919e241 passed [CI 34183695397](https://github.com/evrimakgul/labelguard-ai/actions/runs/34183695397): backend lint/format/deterministic tests, frontend lint/types/6 tests/production build, Docker build and real OCR with a thread-default assertion. Previous local native validation passed 42 backend tests (35 deterministic + 7 live). Existing dependency/action-runtime deprecation warnings are non-failing maintenance items.
 
-This delivery change updates documentation and public screenshots only. Existing application behavior, tests and Treasury source are preserved. Final documentation CI will be recorded after publication.
+This delivery change updates documentation and public screenshots only. Existing application behavior, tests and Treasury source are preserved. Documentation checkpoint 5a792ed passed [CI 34188726208](https://github.com/evrimakgul/labelguard-ai/actions/runs/34188726208), including clean backend/frontend/container verification. Relative documentation/image links resolve and GitHub README content matched the local reviewed blob. Subsequent status-only publication is tracked by the [CI workflow](https://github.com/evrimakgul/labelguard-ai/actions/workflows/ci.yml).
 
 P0/P1 supported core is complete. Batch/CSV, expanded beverage-specific rules, producer/importer/origin checking, reliable typography/physical measurement, accounts and COLAs integration remain deferred or explicitly unsupported. No claim that a Pass means full regulatory compliance.
 
@@ -44,4 +44,4 @@ Normal operation requires no paid OCR, app secret or external OCR API. Public HT
 
 ## Ownership
 
-Codex owns final document reconciliation, publication and CI verification. User owns the actual submission of the two URLs. Do not request further manual commands, enable paid options, create services, or change account/deployment settings. Stop once the final documented readiness check is complete.
+Codex completed document reconciliation, public verification and CI inspection. User owns the actual submission of the two URLs. No manual commands, paid options, new services or account/deployment setting changes are needed. Stop at this delivery milestone.

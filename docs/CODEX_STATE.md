@@ -2,7 +2,7 @@
 
 ## Current objective
 
-Finish the 2026-09-08 public-deployment documentation reconciliation, publish it, verify CI and final public availability, then stop at Treasury submission readiness. No P2 or new runtime feature work.
+2026-09-08 public-deployment verification and documentation reconciliation are complete. Checkpoint 5a792ed passed CI 34188726208 (backend/frontend/container); the status-only handoff does not change application code. Treasury prototype submission is ready with disclosed 5.30-second warm p95/cold-start/regulatory limitations. Stop here; no P2 or new runtime feature work. GitHub's workflow page is authoritative for any subsequent commit's CI.
 
 ## Current evidence
 
@@ -22,11 +22,9 @@ Existing local review containers/images are preserved; do not restart or retest 
 
 ## Exact next actions
 
-1. Review Git diff, link integrity, screenshot paths, setup commands and all current status wording.
-2. Finish SUBMISSION_READINESS and evidence file; ensure no stale no-host/approval-pending statements remain outside labeled research history.
-3. Commit/push documentation using the existing publication authorization; inspect the corresponding CI.
-4. Verify public root/health/demo workflow after publication; no forced redeployment.
-5. Record final result and stop. User submits URLs; no further manual command/account action is required.
+1. No implementation work remains for this submission. Public demo/error/mobile verification and post-publication root/health checks passed; source is unchanged from 919e241.
+2. On a future explicit request, inspect current Git/CI/live state before assuming availability has persisted. Do not repeat completed work merely because a checkpoint exists.
+3. User submits the two URLs. Do not continue host research, force redeployment, create services or implement optional work. No further manual command/account action is required.
 
 ## Authority and lessons
 

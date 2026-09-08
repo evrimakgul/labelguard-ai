@@ -1,6 +1,6 @@
 # Treasury submission review
 
-Reviewed 2026-09-08. Final documentation publication/CI check is in progress; public prototype verification is complete.
+Reviewed 2026-09-08: **ready for Treasury prototype submission with the disclosed limitations below**. Public verification and documentation checkpoint 5a792ed passed; [CI 34188726208](https://github.com/evrimakgul/labelguard-ai/actions/runs/34188726208) completed successfully. This is prototype-delivery readiness, not production accreditation or a strict five-second performance certification.
 
 ## Deliverables
 
@@ -19,7 +19,7 @@ Reviewed 2026-09-08. Final documentation publication/CI check is in progress; pu
 - Speed: 20 warm public requests, median 4.86 seconds and p95 5.30 seconds. Near the requested approximate five seconds; a strict ≤5-second p95 gate is not met. No benchmark weakening or hidden cold-start exclusion: warm measurement is explicitly labeled and cold starts are disclosed separately.
 - Scope: supported P0/P1 core complete; batch/CSV and expanded beverage/typography checks are deferred/disclosed, consistent with the prototype scope decision. Do not add P2 before submission.
 - No-cost: user confirmed Render Free without billing/payment method/credits/subscription; local Tesseract needs no OCR account or key. Source code remains portable.
-- Quality: runtime CI 34183695397 passed backend/frontend/container jobs. Final documentation CI will be linked below after publication.
+- Quality: runtime CI 34183695397 and documentation-checkpoint CI 34188726208 passed backend/frontend/container jobs. Current CI is always available from the [workflow page](https://github.com/evrimakgul/labelguard-ai/actions/workflows/ci.yml). No runtime, tests or Treasury source changed during the final documentation review.
 
 ## Disclosed limitations
 
@@ -31,4 +31,6 @@ Auto-Deploy is unknown and not required for the current working URL. No need for
 
 ## Final handoff
 
-After the documentation push/CI and final availability check, mark this review complete and stop. The user submits the application and source links through the assessment channel. Do not submit on their behalf or start optional features.
+The application and source URLs are accessible, documentation links resolve, public screenshots were reviewed, scoped secret-signature checks found no matches, and Treasury source SHA256 remains AB10D3076C1421514C9B3FDC1970ABE2A068F3582F195CDC62B60675FD007E6A. Local and GitHub README blobs matched at the published verification checkpoint. This final status-only update does not change the application.
+
+Stop implementation here. The user submits the application and source links through the assessment channel. Do not submit on their behalf, create another service, upgrade hosting or start optional features. Auto-Deploy remains informational and unconfirmed; no user setup action is needed for the working submission URLs.
