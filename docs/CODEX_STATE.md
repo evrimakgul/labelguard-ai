@@ -4,11 +4,11 @@
 
 Single-thread Docker default and CI assertion are implemented and locally verified. Recovered 0.1 CPU experiment: all cases passed, wall p95 9599.8 ms (too slow). Rebuilt image at 0.25 CPU/512 MB passed all cases and 20-request benchmark, wall p95 3996.8 ms. Full evidence in HOSTING_RESEARCH. Next: qualifying host with adequate resources; no host selected or deployment approved.
 
-Published source CI remains green; latest local Docker/CI changes are not pushed. Delegation hierarchy remains in CODEX_ORCHESTRATION. No P2 work or external resources introduced.
+Published source 919e241 passed all jobs in CI run 34183695397, including the Docker thread assertion and real OCR. Delegation hierarchy remains in CODEX_ORCHESTRATION. No P2 work or external resources introduced.
 
 ## Current project gate
 
-Local/container acceptance, authorized source publication and remote CI complete. Main was pushed through readiness fix 3369a0c; CI run 34085317594 passed all three jobs. Public deployment still requires separate approval; P2 deferred.
+Local/container acceptance, authorized source publication and remote CI complete through 919e241 / run 34183695397. Public deployment still requires separate approval; P2 deferred.
 
 ## Important decisions
 
@@ -48,7 +48,7 @@ invalid_application is resolved operationally through JSON-file/structured reque
 
 ## Git checkpoint
 
-Published origin/main is 30efee5; its CI passed. The user-requested CODEX_ORCHESTRATION hierarchy and this status update are saved in a following local checkpoint; use git log for its hash. No hosting/deployment performed. No push of this preservation checkpoint is needed before resuming local research.
+Published origin/main is 919e241; CI run 34183695397 passed. This subsequent documentation-only checkpoint records the result locally; use git log for its hash. Earlier references to pending remote CI are superseded by this successful run. No hosting/deployment performed. No push of the status-only checkpoint is needed before further local research. GitHub action-runtime deprecation annotations are a future maintenance item, not test failures.
 
 ## Usage checkpoint
 
