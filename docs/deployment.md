@@ -2,11 +2,31 @@
 
 One Linux container contains the static Next.js interface, FastAPI, local Tesseract and English data. OCR requires no network service, account, or credential. Codex executes these procedures; they are reproducibility instructions, not manual user tasks.
 
-## Current local runtime
+## Current public deployment (2026-09-08)
+
+The user deployed **https://labelguard-ai-4g5s.onrender.com** on Render Free from source **919e241**. User confirmation and the supplied Render screenshot establish the Free instance and live source; the user confirms no billing information/payment method, prepaid credits or paid subscription. The screenshot shows Docker startup using Render's assigned `PORT=10000` and one Uvicorn worker. Do not hard-code the old local port into the hosted start command.
+
+Public root, `/api/health`, favicon, demo download, all seven real OCR cases, safe errors, desktop/mobile browser flows and timings are verified. See [submission review](SUBMISSION_READINESS.md) and [public evidence](verification/public-2026-09-08.json). Auto-Deploy is unconfirmed; do not enable it or create another service merely to finish submission.
+
+Render Free sleeps after 15 idle minutes and may take roughly a minute to wake. Free allowances can suspend services or builds, and instances may restart. Cold-start timing was not measured here. Public warm wall median/p95 was 4857.8/5304.0 ms, distinct from historical local quota tests. [Render Free documentation](https://render.com/docs/free)
+
+For reproduction, use the repository-root Dockerfile/context and its start command, local Tesseract, same-origin browser API, and the platform-provided PORT. No database, persistent disk, custom domain or app secrets are needed. `/api/health` is available for a platform HTTP health probe; the screenshot proves root HEAD health traffic, not that this probe path was configured. Do not assume access to SSH on Free or claim to have inspected hosted environment variables through HTTP.
+
+### Verify the existing public service
+
+Visit the URL once if it is asleep, then run from the repository root with backend development dependencies installed:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/verify_container.py --base-url https://labelguard-ai-4g5s.onrender.com --requests 20
+```
+
+Expected: seven fixture statuses, safe 400/422 errors, `local-tesseract`, and timing statistics. The command reports performance rather than asserting a strict five-second ceiling. Never relabel local results as public measurements.
+
+## Historical local review runtime
 
 Original user container: labelguard-ai-local, port 8000 (preserved).
 Verified replacement candidate: labelguard-ai-verified, image labelguard-ai:verified, port 8001 mapped to container 8000.
-Current VM address: 192.168.70.113; refresh after restart. Windows 127.0.0.1 forwarding remains unavailable; direct VM address works. This is a local networking limitation, not proof of any particular upstream bug.
+Last verified VM address: 192.168.70.113; refresh after restart. Windows 127.0.0.1 forwarding failed during local acceptance; direct VM address worked. This is a local networking limitation, not proof of any particular upstream bug. Local runtime was not rechecked during public verification.
 
 The new candidate includes the favicon and caption-contrast fixes. Use http://192.168.70.113:8001 for final local review while it is running. Neither address is a public submission URL.
 
@@ -68,4 +88,4 @@ Podman OCI builds warn that Dockerfile HEALTHCHECK metadata is ignored. Keep the
 
 ## Public delivery
 
-No hosting provider is selected or authorized. Require HTTPS without login, no billing/payment method, no credits/subscription, and sufficient resources for local OCR. After explicit approval, verify deployment from a fresh browser and record URLs, timings, cold-start behavior, and limitations. Source publication was authorized; remote CI passed for 3369a0c in run 34085317594, including the built container and real OCR checks. Readiness retries include transient connection resets with a bounded retry count/time limit.
+The existing user-created Render deployment is the public submission target. Source publication and verification of this service are authorized. New services, billing changes, upgrades and unrelated deployment changes are not. CI for runtime 919e241 passed in run 34183695397; PROJECT_STATUS tracks final documentation publication. Document-only pushes may trigger a rebuild if Auto-Deploy is already enabled; verify availability afterward without forcing a redeploy. Readiness retries are bounded and do not replace live OCR checks.

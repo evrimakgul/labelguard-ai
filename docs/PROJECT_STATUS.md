@@ -1,59 +1,47 @@
 # Project status
 
-Updated: 2026-09-07
+Updated: 2026-09-08. This is current delivery status; historical sizing experiments remain in HOSTING_RESEARCH.
 
-## Current gate
+## Delivery gate
 
-Local implementation, container acceptance, source publication and remote CI are complete for the supported core scope. Publication was authorized on 2026-09-07. Next: research a qualifying no-cost host, obtain separate deployment approval, and verify a public HTTPS application. P2 remains deferred. CODEX_STATE holds exact continuation, not this document.
+The user deployed Render Free at **https://labelguard-ai-4g5s.onrender.com**. Public core behavior is verified. Documentation publication and its CI are the final in-progress step; see SUBMISSION_READINESS for the delivery checklist. No further product implementation or P2 is required for the accepted prototype.
 
-## Verified runtime
+- Source: https://github.com/evrimakgul/labelguard-ai — verified public.
+- Deployed application commit: **919e241**, confirmed by the user and supplied Render deployment screenshot.
+- Screenshot shows successful deployment, free-instance warning, Uvicorn port 10000, and worker count 1.
+- User confirms $0/month Free, no billing information/payment method, prepaid credits, or paid subscription.
+- Auto-Deploy setting is unknown. No need to enable it or create another service.
+- App remains decision support, not a regulatory approval system.
 
-Codex directly accessed the repository, native Tesseract, Podman, WSL2 and GitHub CLI. Podman identity/WSL service/keyring access fail in the sandbox and succeed with approved host execution; no manual terminal handoff is needed.
+## Public acceptance evidence (2026-09-08)
 
-- Host OCR: Tesseract 5.5.3.20260724.
-- Container: Tesseract 5.5.0, eng/osd, non-root UID 1001.
-- Original container labelguard-ai-local on port 8000 preserved.
-- Final image labelguard-ai:verified, ID 4c2d0173a860192822bf39fe348225ad40265773a1c272a6905a3e5acaa603ae.
-- Verification container labelguard-ai-verified, ID ca50e49c8bad, port 8001 -> 8000.
-- Local review URL: http://192.168.70.113:8001 (refresh route after restart).
-- Windows IPv4 localhost forwarding remains unavailable; direct VM access works. The precise WSL relay cause is unconfirmed and does not block direct-IP acceptance.
+- Public HTTPS root, health, favicon and demo download work without login.
+- Real API provider is `local-tesseract`, not demo OCR.
+- Seven fixtures: pass, brand mismatch, ABV mismatch, warning error, rotation, low contrast and unreadable — all expected statuses.
+- Invalid image returns safe 400; malformed application returns safe 422.
+- Desktop: form demo loader, upload, pass and mismatch results; expected/detected values; OCR text/timing disclosure; click and keyboard evidence selection.
+- Error recovery: invalid PNG produces a friendly error and preserves application values; replacing it with a valid unreadable PNG clears the error and returns Needs Review.
+- Mobile width 390: pass workflow, evidence, timings, no horizontal overflow.
+- Fresh successful flows had no JavaScript/console errors. Deliberate invalid upload produced its expected HTTP 400 resource-console entry, not an unhandled application exception.
+- Screenshots: `screenshots/public-desktop.png` and `screenshots/public-mobile.png`.
+- Evidence summary: `verification/public-2026-09-08.json`.
 
-## Acceptance evidence
+Twenty sequential warm pass requests after the seven-case warmup: wall median/p95 **4857.8/5304.0 ms**, API **4731.0/5218 ms**, OCR **3163.5/3495 ms**. No concurrent browser OCR during this benchmark. This is near the assignment's approximate five-second goal, not a strict ≤5-second pass. Cold-start duration was not measured.
 
-- Backend: 35 deterministic tests plus 7 opt-in native OCR tests, all 42 passed; Ruff lint/format and pip dependency consistency passed.
-- Frontend: lint, TypeScript, all 6 tests and production build passed. Final CSS change additionally passed container production build and browser verification.
-- Podman: final image built, started, and served root/favicon/health successfully. Container pip consistency passed.
-- Real container API: all seven fixtures returned expected pass/mismatch/review; invalid image returned safe 400; malformed application returned safe 422.
-- Browser: desktop pass/mismatch/review; invalid PNG error preserved application values; successful retry cleared the error. 390px mobile pass, evidence selection, timing details, and no horizontal overflow.
-- Final fresh-page browser console: zero errors/warnings. The deliberate invalid-image test produces its expected HTTP 400 resource entry.
-- Fixed favicon 404 and preview filename/caption contrast; screenshots in screenshots/container-desktop.png and screenshots/container-mobile.png.
-- Final warm container benchmark: 20 sequential demo-pass requests after acceptance warmup; wall median 648.9 ms / nearest-rank p95 694.6 ms, API 645.0 / 691 ms, OCR 528.0 / 557 ms. Fixture/hardware-specific, not arbitrary-artwork or public-host guarantees.
-- Initial hosted CI passed backend/frontend and image build, but its first health probe reset during startup (run 34085101966). Commit 3369a0c extends the bounded readiness retry to include resets; the real OCR assertions are unchanged. [Replacement run 34085317594](https://github.com/evrimakgul/labelguard-ai/actions/runs/34085317594) passed backend, frontend and container jobs, including live OCR acceptance.
-- Treasury source SHA256 remains AB10D3076C1421514C9B3FDC1970ABE2A068F3582F195CDC62B60675FD007E6A.
+## Quality and scope
 
-## Constrained-host feasibility
+Runtime source 919e241 passed [CI 34183695397](https://github.com/evrimakgul/labelguard-ai/actions/runs/34183695397): backend lint/format/deterministic tests, frontend lint/types/6 tests/production build, Docker build and real OCR with a thread-default assertion. Previous local native validation passed 42 backend tests (35 deterministic + 7 live). Existing dependency/action-runtime deprecation warnings are non-failing maintenance items.
 
-2026-09-07: the verified image failed the isolated 0.1 CPU/512 MB/no-swap screen at its first label: HTTP 503, logged OCR timeout. Repeat demo-pass failed safely in 12.86 seconds. Peak memory was 210.7 MiB, no OOM events, with substantial CPU throttling. The full constrained benchmark was not completed. This does not invalidate unrestricted local/CI acceptance, but blocks approving this candidate on current evidence. See HOSTING_RESEARCH for counters and next steps. Temporary container removed; existing containers preserved. No code or timeout changes, push, account creation, or deployment.
+This delivery change updates documentation and public screenshots only. Existing application behavior, tests and Treasury source are preserved. Final documentation CI will be recorded after publication.
 
-Single-thread follow-up completed: all seven cases and both errors passed at 0.1 CPU, but warm p95 was 9599.8 ms. Docker now defaults `OMP_THREAD_LIMIT=1`, and CI asserts it. The rebuilt image passed the same full suite at 0.25 CPU/512 MB/no swap, with 20-request wall median/p95 3789.1/3996.8 ms and peak memory 131.5 MiB (no OOM). All temporary containers were removed; existing review containers retain the older image. See HOSTING_RESEARCH for identities and limitations.
+P0/P1 supported core is complete. Batch/CSV, expanded beverage-specific rules, producer/importer/origin checking, reliable typography/physical measurement, accounts and COLAs integration remain deferred or explicitly unsupported. No claim that a Pass means full regulatory compliance.
 
-Revalidation: 42 backend tests, Ruff lint/format, frontend lint/types/6 tests, local and container dependency checks, and CI YAML parsing passed. Podman production image build passed (unchanged frontend build layers reused from cache). Two upstream backend-test deprecation warnings remain; no failures. No frontend code changed, so prior browser evidence is retained rather than relabeled as rerun. Published source `919e241` passed [CI run 34183695397](https://github.com/evrimakgul/labelguard-ai/actions/runs/34183695397): backend, fresh frontend production build, and Docker/live-OCR checks including the new thread assertion. GitHub reports action-runtime deprecation warnings (older actions run under Node 24); no failed checks. Action-major refresh is maintenance, not a submission-blocking failure.
+## Hosting trade-offs
 
-## invalid_application resolution
+Render Free sleeps after inactivity, can restart/suspend under its free allowances, and is not an always-on production SLA. The user selected this host; earlier research/local-quota rejection was a preliminary sizing concern, not a measurement of the actual public service. Public results supersede simulation for this deployment; historical measurements remain labeled.
 
-The original failure occurred at application JSON/model validation, before OCR. Exact historical request bytes are unavailable. File-based JSON and structured HTTP submissions pass, and a fresh valid inline-JSON shell request also passed: shell quoting or transcript escaping is plausible, not a proven unique cause. The reproducible fix is tests/fixtures/demo-application.json and scripts/verify_container.py. Server validation was not weakened.
+Normal operation requires no paid OCR, app secret or external OCR API. Public HTTP checks do not inspect Render billing, internal environment, exact OCR binary version or full logs; those claims are limited to user evidence, repository configuration and observable functionality.
 
-## Ownership and remaining delivery
+## Ownership
 
-Latest published checkpoint 30efee5 also passed [CI run 34085764694](https://github.com/evrimakgul/labelguard-ai/actions/runs/34085764694), confirmed 2026-09-07. The user authorized bounded research and resource testing despite low capacity. [HOSTING_RESEARCH.md](HOSTING_RESEARCH.md) rejects paid-plan Docker Spaces and records the failed Render-like resource screen. No host is selected or deployed. Next Codex work is CPU-efficiency investigation or another qualifying-host assessment, not manual user commands.
-
-Codex owns all accessible tests, runtime operations, browser checks, benchmarks, repository inspection and documentation. USER_REQUIREMENTS contains only genuine human dependencies.
-
-1. Final review and local checkpoint of this verified work.
-2. Source publication authorized and completed; existing source remote updated.
-3. Remote CI verified successfully; inspect checks for subsequent source/workflow changes as needed.
-4. Research a host with public HTTPS, no billing/payment/credits/subscription, sufficient local OCR resources; obtain deployment/account approval.
-5. Deploy and verify public health, full workflow, errors, mobile layout and timings; update README URLs and limitations.
-6. Confirm evaluator-accessible source and public application before Treasury submission.
-
-No paid dependency or application secret is required. Source was pushed with explicit authorization. No deployment or external provisioning has been performed; public deployment still requires separate approval.
+Codex owns final document reconciliation, publication and CI verification. User owns the actual submission of the two URLs. Do not request further manual commands, enable paid options, create services, or change account/deployment settings. Stop once the final documented readiness check is complete.

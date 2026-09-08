@@ -1,0 +1,35 @@
+{
+  "date": "2026-09-08",
+  "baseUrl": "https://labelguard-ai-4g5s.onrender.com",
+  "deployedCommit": "919e241",
+  "commitEvidence": "User confirmation and supplied Render deployment screenshot",
+  "provider": "local-tesseract",
+  "cases": [
+    {"case":"demo-pass.png","status":"pass","ms":5133},
+    {"case":"demo-brand-mismatch.png","status":"mismatch","ms":5014},
+    {"case":"demo-abv-mismatch.png","status":"mismatch","ms":4496},
+    {"case":"demo-warning-error.png","status":"mismatch","ms":4391},
+    {"case":"demo-rotated.png","status":"pass","ms":5402},
+    {"case":"demo-low-contrast.png","status":"pass","ms":4611},
+    {"case":"demo-unreadable.png","status":"review","ms":3201}
+  ],
+  "errors":{"invalidImage":400,"invalidApplication":422},
+  "benchmark":{
+    "requests":20,"fixture":"demo-pass.png","percentileMethod":"nearest-rank",
+    "warmup":"seven correctness fixtures; no concurrent browser OCR",
+    "wall":{"medianMs":4857.8,"p95Ms":5304.0},
+    "api":{"medianMs":4731.0,"p95Ms":5218},
+    "ocr":{"medianMs":3163.5,"p95Ms":3495},
+    "coldStartMeasured":false,"strictFiveSecondTargetMet":false
+  },
+  "browser":{
+    "desktopViewportWidth":1365,"mobileViewportWidth":390,
+    "pass":true,"mismatch":true,"unreadableReview":true,
+    "invalidImagePreservesApplication":true,"retryClearsError":true,
+    "keyboardEvidence":true,"mobileEvidence":true,"timingsVisible":true,
+    "horizontalOverflow":false,"successfulFlowConsoleErrors":0,
+    "expectedInvalidUploadConsoleResourceStatus":400
+  },
+  "accountEvidence":"User confirmed Free $0/month, no billing/payment method, prepaid credits or paid subscription; Auto-Deploy unconfirmed",
+  "limitations":["Synthetic fixtures only","No cold-start measurement","No arbitrary-artwork/concurrency SLA","Not full regulatory approval"]
+}

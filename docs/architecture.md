@@ -6,6 +6,8 @@ LabelGuard AI deploys as one container. A multi-stage build exports the Next.js 
 
 Local development runs Next.js on port 3000 and FastAPI on 8000. CORS is limited to configured origins.
 
+The public prototype runs on Render Free at https://labelguard-ai-4g5s.onrender.com. Render terminates public HTTPS; the container honors the assigned PORT (10000 in the user's deployment logs). The static frontend uses relative same-origin API requests, with no public-browser localhost override. Hosting does not change the local OCR/provider boundary.
+
 ## Request flow
 
 1. The browser serializes typed application data and sends one JPEG or PNG as multipart form data.

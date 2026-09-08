@@ -13,10 +13,12 @@
 11. Tesseract 5.5.3 with English and orientation data is installed on the current Windows host.
 12. Podman 6.0.2 is the selected free OCI engine. Its rootless WSL2 machine, image build, container process startup, internal health, and direct machine-address access pass; Windows localhost forwarding remains unavailable.
 13. GitHub CLI is authenticated through the operating-system keyring, and no GitHub token belongs in project configuration.
-14. No final public host will be selected until it provides HTTPS without billing information, a payment method, prepaid credits, or a paid subscription.
+14. The user selected Render Free and confirmed on 2026-09-08 that it required no billing information, payment method, prepaid credits or paid subscription. The supplied deployment screenshot confirms live source 919e241 and a free-instance banner. Public HTTPS works; account settings are user-attested rather than inferred from HTTP.
 15. Deterministic fixtures do not replace live OCR evidence; the current Windows Tesseract acceptance and benchmark therefore run as separate opt-in checks.
 16. LabelGuard AI provides decision support and never represents an official TTB determination.
 17. Codex executes all accessible local verification and runtime operations. Sandbox approval is distinct from a user running commands manually; approved host access to Podman, WSL and the GitHub keyring works.
 18. Direct Podman-machine IP access is sufficient for local acceptance while Windows localhost forwarding is unavailable. A public HTTPS URL remains required for final delivery.
 19. The current P1 inventory follows the accepted continuation plan; producer/importer and country-of-origin checks are deferred expanded beverage rules. SPEC now reflects that scope explicitly.
 20. Docker defaults to one OpenMP thread for local OCR to avoid measured oversubscription on CPU-limited hosts. The setting improves timeout behavior but is not a guarantee of the five-second latency target; every final host still requires measured acceptance. Native process settings are not changed implicitly.
+21. Public p95 5.30 seconds is reported as near the assignment's approximate five-second goal, not rounded down into a strict pass. Free-host cold starts and unresolved regulatory typography are explicit prototype trade-offs, not hidden guarantees.
+22. Render Auto-Deploy remains unconfirmed. The current request authorizes documenting and verifying the existing service, not creating services, changing account settings, or upgrading compute.

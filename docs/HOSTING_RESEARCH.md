@@ -1,5 +1,9 @@
 # Public hosting assessment
 
+## Superseded research checkpoint
+
+On 2026-09-08 the user selected and deployed Render Free, confirming no billing/payment method/credits/subscription and deployed commit 919e241. The public application was then verified: all seven cases and errors passed; warm median/p95 4857.8/5304.0 ms. See PROJECT_STATUS and SUBMISSION_READINESS for current decisions. The research, proposed approval steps, and strict local-quota results below are historical, not instructions to select another host or claim deployment is still pending. Real Render performance differs from a local strict CPU quota; neither measurement invalidates the other.
+
 Checked against official documentation on 2026-09-07. Research only: no account created, host selected, resource provisioned, or deployment performed. Existing local and CI acceptance remain valid; P2 stays deferred.
 
 ## Findings

@@ -32,6 +32,8 @@
 
 ## Manual acceptance
 
+Public acceptance on 2026-09-08 passed all seven live fixtures plus safe API errors, desktop/mobile flows, invalid-image recovery, keyboard evidence selection and timings. Public screenshots and machine-readable results are linked from PROJECT_STATUS. Warm median/p95 is 4857.8/5304.0 ms; no strict five-second or cold-start pass is claimed. The sequence below can also be used locally; do not use fixture-mode timings as production OCR evidence.
+
 1. Start API in demo mode and start the frontend.
 2. Enter `OLD TOM DISTILLERY`, `Kentucky Straight Bourbon Whiskey`, `45`, and `750 mL`.
 3. Upload `demo-pass.png` and verify.

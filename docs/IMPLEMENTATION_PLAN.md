@@ -1,28 +1,22 @@
 # LabelGuard AI implementation plan
 
-## Completed implementation
+## Completed
 
-P0 core and P1 work are committed as d9dd867 and 37c66f9. Local Tesseract correction followed in b5bfb61. Preserve that implementation. Detailed requirements live in SPEC; acceptance evidence lives in PROJECT_STATUS.
+P0/P1 implementation, local/live OCR corrections, deterministic tests, image validation, UI/evidence, Docker, source publication and CI. Single-thread container default is in 919e241. The user deployed that source to Render Free; public end-to-end verification completed on 2026-09-08.
 
-## Current stage
+## Final delivery stage
 
-Local container/browser acceptance and repository review pass; the lightweight instruction/orchestration refactor is integrated. Source publication and remote CI completed on 2026-09-07. The current gate is qualifying host research and separately approved public deployment. CODEX_STATE records the exact continuation.
+1. Verify public HTTPS, seven OCR fixtures, safe errors, browser/mobile flows and public timings — complete.
+2. Reconcile README, deployment/status/limitations and evidence with actual Render state — current documentation change.
+3. Publish reviewed documentation and verify its CI. Do not change runtime/account settings merely to update documentation.
+4. Confirm both public URLs and record the final submission checklist. Stop; the user submits.
 
-## Remaining delivery sequence
+PROJECT_STATUS owns verified evidence; SUBMISSION_READINESS owns the final checklist; CODEX_STATE owns the immediate continuation.
 
-1. Local/container evidence, README/run instructions and source/secrets review are complete; retain that evidence unless changes require revalidation.
-2. Source publication is authorized and completed; retain that authorization for this workflow.
-3. Remote CI passed for 3369a0c. Its container job builds and exercises live OCR without secrets; retain the verified evidence.
-4. Single-thread Docker configuration is implemented and tested: 0.1 CPU correctness passes but misses the speed target; 0.25 CPU/512 MB meets it on local fixtures. Continue qualifying-host research using that evidence. Koyeb and Northflank require payment methods and are rejected. No host has been selected; any account/deployment still requires approval.
-5. Deploy, verify public HTTPS with no login, fresh-browser pass/error/mobile flows, and production timings.
-6. Add source/public URLs and final limitations to README; confirm both Treasury deliverables are accessible.
+## Scope and constraints
 
-Local and container gates do not themselves authorize publication. Public delivery remains unfinished until an evaluator can access the source and working application.
+P2 remains deferred: batch, CSV, filtering, advanced corrections and expanded beverage rules are not added for this submission. Treasury source remains unchanged.
 
-## Deferred scope
+Render Free is user-selected and confirmed to require no billing/payment method, prepaid credits or paid subscription in this account. The original no-cost/no-secret constraints remain in force. Existing public verification and document publication are authorized; new resources, upgrades, account changes and unrelated deployments are not.
 
-P2 batch, CSV, filtering, advanced corrections, and expanded beverage rules remain deferred. Do not start optional work to fill time while awaiting delivery approval.
-
-## Constraints
-
-No paid OCR/cloud service, billing, payment method, credits, or paid subscription. No secrets in Git. No cloud provisioning, account creation, push or deployment without the appropriate stage and explicit authorization. Treasury source remains unchanged.
+Record latency honestly: measured public p95 5.30 seconds is near the approximate five-second goal, not a strict five-second guarantee. Cold starts are a separate hosting limitation, not hidden in warm performance claims.
