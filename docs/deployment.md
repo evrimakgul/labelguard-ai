@@ -60,7 +60,9 @@ The earlier invalid_application response occurred during JSON/model validation b
 
 ## Runtime contract and health
 
-Linux container, PORT default 8000, no persistent storage or application secrets, non-root UID 1001. Provision enough CPU/RAM for measured OCR; 0.5 CPU/1 GB is an initial estimate, not validated production sizing.
+Linux container, PORT default 8000, no persistent storage or application secrets, non-root UID 1001. The single-thread image passed a local 0.25 CPU/512 MB/no-swap screen with warm p95 3996.8 ms across 20 demo-pass requests. Treat this as a measured starting point, not a proven minimum or concurrency/all-artwork guarantee. Public hardware still requires its own benchmark.
+
+The Docker runtime defaults to `OMP_THREAD_LIMIT=1` to reduce Tesseract thread oversubscription. It can be explicitly overridden for separately benchmarked hardware. Keep `OCR_TIMEOUT_SECONDS=8`; thread tuning does not justify relaxing correctness or latency gates. At a strict 0.1 CPU/512 MB quota, single-thread OCR passed the fixtures but had a 9.6-second warm p95, so that sizing is not performance-approved. See [hosting evidence](HOSTING_RESEARCH.md). Native runs must export this variable explicitly; the application does not automatically load `.env`.
 
 Podman OCI builds warn that Dockerfile HEALTHCHECK metadata is ignored. Keep the directive for runtimes that honor it and configure a host-level GET /api/health probe for portability. No format change is needed for application operation. The health endpoint proves HTTP liveness; live OCR acceptance separately verifies the OCR dependency. A host's PORT override must also be reflected in its health-probe port.
 

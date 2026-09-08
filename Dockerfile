@@ -11,6 +11,7 @@ RUN npm run build
 FROM python:3.12-slim AS runtime
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
+    OMP_THREAD_LIMIT=1 \
     STATIC_DIR=/app/static \
     PORT=8000
 WORKDIR /app

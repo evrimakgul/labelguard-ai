@@ -169,6 +169,8 @@ After live OCR correction, 20 production-mode requests on the same host measured
 
 Final Linux container benchmark (2026-09-06): 20 sequential pass-fixture requests after warmup, wall median **648.9 ms**, nearest-rank p95 **694.6 ms**; API median/p95 645.0/691 ms and OCR 528.0/557 ms. This measures the local WSL container, not public-host latency or varied real-world artwork. The container verifier reports every expected case and rejects unexpected results.
 
+Docker now defaults to single-thread Tesseract (`OMP_THREAD_LIMIT=1`). In a local 0.25 CPU/512 MB/no-swap sizing test, all seven live fixtures and error cases passed; 20 warm requests measured **3789.1 ms median / 3996.8 ms p95**. At 0.1 CPU, single-thread correctness passed but p95 was **9599.8 ms**, above target. These are separate resource-limited experiments, not public-host guarantees. See [hosting evidence](docs/HOSTING_RESEARCH.md).
+
 ## Test Data
 
 Download or upload the fixtures under [`tests/fixtures/labels`](tests/fixtures/labels):

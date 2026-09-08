@@ -2,7 +2,9 @@
 
 ## Current objective
 
-Source publication and all CI succeeded; delegation hierarchy is committed in a9a29fa. Hosting research and the initial constrained-container screen are complete. The default image failed at 0.1 CPU with an OCR timeout. Next: bounded CPU-efficiency investigation or another qualifying host, before requesting hosting approval.
+Single-thread Docker default and CI assertion are implemented and locally verified. Recovered 0.1 CPU experiment: all cases passed, wall p95 9599.8 ms (too slow). Rebuilt image at 0.25 CPU/512 MB passed all cases and 20-request benchmark, wall p95 3996.8 ms. Full evidence in HOSTING_RESEARCH. Next: qualifying host with adequate resources; no host selected or deployment approved.
+
+Published source CI remains green; latest local Docker/CI changes are not pushed. Delegation hierarchy remains in CODEX_ORCHESTRATION. No P2 work or external resources introduced.
 
 ## Current project gate
 
@@ -30,14 +32,14 @@ Verified at 2026-09-06 23:11 UTC. WSL IP 192.168.70.113 (refresh after reboot). 
 
 ## Current unfinished step
 
-CI is green on published HEAD 30efee5 (run 34085764694). Render-like strict 0.1 CPU/512 MB limits caused the first fixture to time out (HTTP 503); repeat failed in 12.86 seconds. Memory peaked at 210.7 MiB with no OOM; CPU throttling confirmed. All-case/20-request constrained benchmark remains incomplete, not passed. No code/assertion/timeout changes. Temporary resource-check container removed; original and verified containers remain running. Full evidence is in HOSTING_RESEARCH.md. Investigate CPU efficiency (thread oversubscription is only a hypothesis) or another host; do not approve deployment yet.
+Rebuilt image labelguard-ai:single-thread is d653e81cfa2fac0899119b27bae06c35fcc8ae048fb8f33cd3be0089c175e538. Tesseract 5.5.0 eng/osd; OMP_THREAD_LIMIT=1 asserted. All temporary test containers were removed; original/verified containers remain running on the older image. Rechecked 42 backend tests, Ruff lint/format, frontend lint/types/6 tests, dependency consistency, CI YAML and Podman image build (frontend layers cached). Local resource-limited HTTP acceptance passed. No UI change or new browser run. Updated remote CI is pending a push; prior published run remains green. Hosting remains unresolved: Docker Spaces require a paid plan; Koyeb/Northflank require payment methods; Render's simulated free CPU misses the latency target.
 
 ## Exact next actions
 
 1. Inspect git status --short and git log -3 --oneline to confirm this checkpoint, preserving any newer changes.
 2. Read USER_REQUIREMENTS for publication boundary; no manual terminal request is needed.
 3. If resuming after restart: inspect podman ps --all, refresh WSL route as documented in deployment.md, and start the existing verification container only if stopped.
-4. Check actual remaining usage before new work. When capacity permits, investigate the constrained OCR timeout; consider a controlled thread-limit experiment without weakening the 8-second OCR timeout or verifier. Preserve existing containers; do not create an account or deploy. Latest published CI is already confirmed green in run 34085764694; do not repeat it absent a new push.
+4. Continue host research against the no-billing constraints and measured local sizing. Do not repeat the completed thread experiment. Preserve existing containers; no account creation/deployment without approval. If publishing the new runtime/CI checkpoint under existing source authorization, inspect the resulting CI; never claim prior CI covers this new change.
 5. Do not rerun completed local gates unless code/runtime evidence changed.
 
 ## Errors/blockers
@@ -50,4 +52,4 @@ Published origin/main is 30efee5; its CI passed. The user-requested CODEX_ORCHES
 
 ## Usage checkpoint
 
-2026-09-07, latest runtime query during hosting research: 57% remaining in the 5-hour window, 5% weekly. The user explicitly authorized limited further work despite the earlier preservation threshold; the bounded research stage is now checkpointed. Limits are shared account capacity, not convertible into guaranteed work hours or exact task tokens. No reset credit consumed; user authorization is required to redeem one.
+On resumption after the user's 0% stop, the actual usage query reported 99% remaining in the five-hour window and 100% weekly. No reset credit was redeemed by Codex. Continue bounded stages with periodic checks; these are account limits, not guaranteed task hours.

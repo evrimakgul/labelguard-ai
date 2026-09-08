@@ -35,6 +35,10 @@ Codex directly accessed the repository, native Tesseract, Podman, WSL2 and GitHu
 
 2026-09-07: the verified image failed the isolated 0.1 CPU/512 MB/no-swap screen at its first label: HTTP 503, logged OCR timeout. Repeat demo-pass failed safely in 12.86 seconds. Peak memory was 210.7 MiB, no OOM events, with substantial CPU throttling. The full constrained benchmark was not completed. This does not invalidate unrestricted local/CI acceptance, but blocks approving this candidate on current evidence. See HOSTING_RESEARCH for counters and next steps. Temporary container removed; existing containers preserved. No code or timeout changes, push, account creation, or deployment.
 
+Single-thread follow-up completed: all seven cases and both errors passed at 0.1 CPU, but warm p95 was 9599.8 ms. Docker now defaults `OMP_THREAD_LIMIT=1`, and CI asserts it. The rebuilt image passed the same full suite at 0.25 CPU/512 MB/no swap, with 20-request wall median/p95 3789.1/3996.8 ms and peak memory 131.5 MiB (no OOM). All temporary containers were removed; existing review containers retain the older image. See HOSTING_RESEARCH for identities and limitations.
+
+Revalidation: 42 backend tests, Ruff lint/format, frontend lint/types/6 tests, local and container dependency checks, and CI YAML parsing passed. Podman production image build passed (unchanged frontend build layers reused from cache). Two upstream backend-test deprecation warnings remain; no failures. No frontend code changed, so prior browser evidence is retained rather than relabeled as rerun. The updated CI assertion has passed locally; remote CI for this unpushed change remains pending.
+
 ## invalid_application resolution
 
 The original failure occurred at application JSON/model validation, before OCR. Exact historical request bytes are unavailable. File-based JSON and structured HTTP submissions pass, and a fresh valid inline-JSON shell request also passed: shell quoting or transcript escaping is plausible, not a proven unique cause. The reproducible fix is tests/fixtures/demo-application.json and scripts/verify_container.py. Server validation was not weakened.

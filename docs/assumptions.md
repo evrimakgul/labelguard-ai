@@ -19,3 +19,4 @@
 17. Codex executes all accessible local verification and runtime operations. Sandbox approval is distinct from a user running commands manually; approved host access to Podman, WSL and the GitHub keyring works.
 18. Direct Podman-machine IP access is sufficient for local acceptance while Windows localhost forwarding is unavailable. A public HTTPS URL remains required for final delivery.
 19. The current P1 inventory follows the accepted continuation plan; producer/importer and country-of-origin checks are deferred expanded beverage rules. SPEC now reflects that scope explicitly.
+20. Docker defaults to one OpenMP thread for local OCR to avoid measured oversubscription on CPU-limited hosts. The setting improves timeout behavior but is not a guarantee of the five-second latency target; every final host still requires measured acceptance. Native process settings are not changed implicitly.

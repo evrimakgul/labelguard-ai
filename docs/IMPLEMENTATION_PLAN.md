@@ -13,7 +13,7 @@ Local container/browser acceptance and repository review pass; the lightweight i
 1. Local/container evidence, README/run instructions and source/secrets review are complete; retain that evidence unless changes require revalidation.
 2. Source publication is authorized and completed; retain that authorization for this workflow.
 3. Remote CI passed for 3369a0c. Its container job builds and exercises live OCR without secrets; retain the verified evidence.
-4. The default image failed the local 0.1 CPU/512 MB feasibility screen: first-label OCR timeout, no OOM. Investigate CPU efficiency or another qualifying host as recorded in HOSTING_RESEARCH.md. Require successful constrained acceptance before requesting account/deployment approval. No host has been selected.
+4. Single-thread Docker configuration is implemented and tested: 0.1 CPU correctness passes but misses the speed target; 0.25 CPU/512 MB meets it on local fixtures. Continue qualifying-host research using that evidence. Koyeb and Northflank require payment methods and are rejected. No host has been selected; any account/deployment still requires approval.
 5. Deploy, verify public HTTPS with no login, fresh-browser pass/error/mobile flows, and production timings.
 6. Add source/public URLs and final limitations to README; confirm both Treasury deliverables are accessible.
 
